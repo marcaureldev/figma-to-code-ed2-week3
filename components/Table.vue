@@ -180,15 +180,15 @@
 
 
 
-        {{ data.market_caps }}
+        <!-- {{ data.market_caps }}
         <div v-if="data">
-            <!-- Intégrer ici votre bibliothèque de graphique pour afficher les données -->
+           
             <ul>
                 <li v-for="(point, index) in data.market_caps" :key="index">
                     Date: {{ new Date(point[0]).toLocaleDateString() }} - Market Cap: {{ point[1] }} USD
                 </li>
             </ul>
-        </div>
+        </div> -->
 
     </div>
 </template>
