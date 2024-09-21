@@ -12,7 +12,7 @@
         </div> -->
 
         <div class="hidden py-8 lg:flex lg:flex-col space-y-10 w-64 border-r h-full fixed top-0 left-0 z-30">
-            <SidebarMenu />
+            <AsidebarMenu />
             <div class="mt-auto">
                 UserItem
             </div>
@@ -20,7 +20,7 @@
 
         <div class="lg:static absolute top-0 w-full h-full bg-white duration-500 lg:duration-0 ease-out lg:hidden"
             :class="[open ? 'left-0' : 'left-[-100%]']">
-            <SidebarMenu />
+            <AsidebarMenu />
             <img v-if="open" src="/icons/close-icon.svg" alt="Logo"
                 class="absolute z-50 top-6 size-5 cursor-pointer right-4" @click="menuOpen" />
         </div>

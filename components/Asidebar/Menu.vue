@@ -3,7 +3,7 @@
         <header class="flex items-center gap-2 p-3 hover:scale-[101%] transition cursor-pointer bg-tokena-dark-2
             bg-opacity-[7%] w-52 mt- mx-5 lg:mx-auto rounded-md">
             <img src="/icons/logo.svg" alt="Logo" />
-            <div  class="text-tokena-blue">
+            <div class="text-tokena-blue">
                 <p class="text-lg font-medium">Tokena</p>
                 <p class="text-xs">Finance app</p>
             </div>
@@ -36,42 +36,34 @@ const items = ref([
     },
     {
         title: "Activities",
-        path: "/activities",
         icon: "/icons/chart-icon.svg",
     },
     {
         title: "Cards",
-        path: "/cards",
         icon: "/icons/credit-card-icon.svg",
     },
     {
         title: "Reports",
-        path: "/reports",
         icon: "/icons/reports-icon.svg",
     },
     {
         title: "Notifications",
-        path: "/notifications",
         icon: "/icons/bell-icon.svg",
     },
     {
         title: "Billing",
-        path: "/billing",
         icon: "/icons/news-icon.svg",
     },
     {
         title: "Invoices",
-        path: "/invoices",
         icon: "/icons/invoice-icon.svg",
     },
     {
         title: "Help center",
-        path: "/help",
         icon: "/icons/headphone-icon.svg",
     },
     {
         title: "Settings",
-        path: "/settings",
         icon: "/icons/settings-icon.svg",
     },
 ]);
