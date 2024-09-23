@@ -10,8 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "apexcharts": "^3.53.0",
     "nuxt": "^3.12.4",
-    "vue": "latest"
+    "vue": "latest",
+    "vue3-apexcharts": "^1.6.0"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.12.1",

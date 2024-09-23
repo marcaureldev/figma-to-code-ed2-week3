@@ -1,5 +1,5 @@
 export const useMarketCapChart = (id = 'bitcoin', days = 7) => {
-    const { data, error } = useFetch(
+    const { data: marketCapChart, error } = useFetch(
         `https://api.coingecko.com/api/v3/coins/${id}/market_chart`,
         {
             params: {
@@ -10,5 +10,5 @@ export const useMarketCapChart = (id = 'bitcoin', days = 7) => {
         }
     );
 
-    return { data, error };
+    return { marketCapChart, error };
 };
