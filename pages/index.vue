@@ -1,9 +1,5 @@
 <template>
   <div class="space-y-5 px-4">
-   <div class="space-y-4 sticky">
-    <Navbar class="hidden lg:flex" />
-    <hr>
-   </div>
     <div class="xl:flex items-end xl:space-x-5 space-y-4 xl:space-y-0">
       <div class="space-y-4 xl:max-w-72 border rounded-lg p-4">
         <div>
@@ -11,7 +7,8 @@
           <div class="flex space-x-10">
             <p class="text-sm font-semibold text-tokena-dark">$63,755,200</p>
             <p class="text-xs">
-              <span class="p-2 bg-tokena-green bg-opacity-[15%] text-xs text-tokena-green rounded-full max-w-2">+2.3%</span>
+              <span
+                class="p-2 bg-tokena-green bg-opacity-[15%] text-xs text-tokena-green rounded-full max-w-2">+2.3%</span>
               vs last month
             </p>
           </div>
@@ -39,7 +36,24 @@
       </div>
     </div>
 
-    <Table></Table>
+    <div class="flex justify-between items-center py-4">
+      <div class="flex space-x-2 items-center border-tokena-gray border p-2 rounded-lg w-72">
+        <img src="/icons/search-icon.svg" alt="Search Icon">
+        <input type="text" class="focus:outline-none" placeholder="Search">
+      </div>
+
+      <div class="flex space-x-2 items-center border-tokena-gray border p-2 rounded-lg w-60">
+        <input type="text" class="focus:outline-none" placeholder="Categories">
+      </div>
+    </div>
+
+    <div class="border-2 rounded-lg">
+      <div class="flex justify-between items-center p-4">
+        <p>Market</p>
+        <img src="/icons/market-options-icons.svg" alt="Options icons">
+      </div>
+      <Table></Table>
+    </div>
   </div>
 </template>
 

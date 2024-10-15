@@ -3,8 +3,11 @@
         <div>
             <Asidebar />
         </div>
-        <div class="py-9 px-3 w-full">
-            <slot />
+        <div class="space-y-4 overflow-hidden">
+            <Navbar class="hidden lg:flex border-b p-6" />
+            <div class="w-full py-4">
+                <slot />
+            </div>
         </div>
     </div>
 </template>
