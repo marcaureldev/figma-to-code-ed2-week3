@@ -47,13 +47,8 @@
       </div>
     </div>
 
-    <div class="border-2 rounded-lg">
-      <div class="flex justify-between items-center p-4">
-        <p>Market</p>
-        <img src="/icons/market-options-icons.svg" alt="Options icons">
-      </div>
-      <Table></Table>
-    </div>
+    <Table></Table>
+
   </div>
 </template>
 
