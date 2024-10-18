@@ -1,20 +1,53 @@
+<script setup>
+import { computed } from "vue";
+
+const props = defineProps({
+	trending: {
+		type: Object,
+		required: true,
+	},
+});
+
+const background = computed(() => {
+	return `url(${props.trending.item.thumb})`;
+});
+
+const truncateText = (text, maxLength) => {
+	if (text.length > maxLength) {
+		return text.slice(0, maxLength) + '...';
+	}
+	return text;
+};
+
+const pricePercent = props.trending.item.data.price_change_percentage_24h.aed;
+</script>
+
 <template>
 	<div class="border p-3 xl:max-w-52 rounded-lg">
-		<div class="flex justify-between space-x-12 items-start">
-			<div class="flex space-x-2">
-				<img src="/icons/sui-token-icon.svg" alt="Sui token" />
+		<div class="flex justify-between items-start">
+			<div class="flex space-x-2 ">
+				<div class="w-9 h-9 rounded-full bg-cover bg-center" :style="{ backgroundImage: background }"></div>
 				<div>
-					<p class="lg:text-xs font-bold">Sui</p>
-					<p class="lg:text-xs">SUI</p>
+					<p class="text-xs font-bold text-nowrap">{{ truncateText(trending.item.name, 4) }}</p>
+					<p class="text-xs">{{ trending.item.symbol }}</p>
 				</div>
 			</div>
-			<p class="flex items-center p-1 bg-tokena-red font-semibold bg-opacity-[15%] lg:text-[8px] text-tokena-red rounded-full">
-				-10.5% <img src="/icons/trade-down-icon.svg" alt="Trade down icon" class="w-4" />
-			</p>
+			<span v-if="trending.item.data.price_change_percentage_24h.aed > 0"
+				class="flex items-center p-1 bg-tokena-green font-semibold bg-opacity-[15%] lg:text-xs text-tokena-green rounded-full">
+				{{ pricePercent.toFixed(2) }}%
+				<img src="/icons/trade-up-icon.svg" alt="Trade down icon" class="w-4" />
+			</span>
+			<span v-else
+				class="flex items-center p-1 bg-tokena-red font-semibold bg-opacity-[15%] lg:text-xs text-tokena-red rounded-full">
+				{{ pricePercent.toFixed(2) }}%
+				<img src="/icons/trade-down-icon.svg" alt="Trade down icon" class="w-4" />
+			</span>
 		</div>
 		<div class="text-sm mt-4 text-tokena-dark-gray">
-			<p class="font-bold">1.56 SUI</p>
-			<p>$2,455,806,673</p>
+			<p class="font-bold">
+				{{ trending.item.data.price.toFixed(2) }} {{ trending.item.symbol }}
+			</p>
+			<p>{{ trending.item.data.market_cap }}</p>
 		</div>
 	</div>
 </template>

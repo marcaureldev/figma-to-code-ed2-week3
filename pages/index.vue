@@ -1,3 +1,12 @@
+<script setup>
+const { trendingInfo } = useTrendingInfo()
+
+const trendingInfos = trendingInfo?.value?.coins.slice(0, 4)
+
+console.log(trendingInfo)
+
+</script>
+
 <template>
   <div class="space-y-5 px-4">
     <div class="xl:flex items-end xl:space-x-5 space-y-4 xl:space-y-0">
@@ -27,11 +36,8 @@
 
       <div>
         <h2 class="text-lg font-semibold mb-1">Trending</h2>
-        <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
-          <TrendingCard />
-          <TrendingCard />
-          <TrendingCard />
-          <TrendingCard />
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          <TrendingCard v-for="(trending, index) in trendingInfos" :key="index" :trending="trending" />
         </div>
       </div>
     </div>
@@ -51,7 +57,3 @@
 
   </div>
 </template>
-
-<script>
-
-</script>

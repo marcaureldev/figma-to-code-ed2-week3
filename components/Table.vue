@@ -67,8 +67,8 @@
     <div class="flex items-center bg-tokena-blue text-white rounded-lg px-3 py-1.5 cursor-pointer" @click="prev">
       &lt;
     </div>
-    <div class="flex items-center rounded-lg px-3 py-1.5 cursor-pointer border border-tokena-blue"
-      :class="{ 'bg-tokena-blue text-white': page === i + 1 }" @click="navigate(i + 1)"
+    <div class="flex items-center rounded-lg px-3 py-1.5 cursor-pointer border border-tokena-blue text-tokena-blue"
+      :class="{ 'bg-tokena-blue bg-opacity-20': page === i + 1 }" @click="navigate(i + 1)"
       v-for="(index, i) in marketLists.length / itemperpage" :key="i">
       {{ i + 1 }}
     </div>
