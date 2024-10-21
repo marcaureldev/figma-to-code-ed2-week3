@@ -20,18 +20,19 @@
         </thead>
         <tbody class="text-sm whitespace-nowrap">
           <tr v-for="(item, index) in copyMarketList" :key="index" class="bg-white border-b hover:bg-gray-100">
-            <td class="px-4 py-3"><img src="/icons/star-icon.svg" alt="" /></td>
+            <td class="px-4 py-3" style="min-width: 50px;">
+              <img src="/icons/star-icon.svg" alt="Star icon" />
+            </td>
             <td class="px-4 py-3">{{ item.market_cap_rank }}</td>
-            <td class="text-sm font-bold p-1 whitespace-nowrap">
+            <td class="text-sm font-bold p-1 whitespace-nowrap max-w-xs truncate">
               <div class="flex items-center space-x-1">
                 <img :src="item.image" :alt="item.name" class="w-6 h-6" />
                 <p class="flex items-center">
-                  {{ item.name }}-<span class="uppercase">{{
-                    item.symbol
-                  }}</span>
+                  {{ item.name }}-<span class="uppercase">{{ item.symbol }}</span>
                 </p>
               </div>
             </td>
+
             <td class="py-3 p-2">${{ item.current_price.toLocaleString() }}</td>
             <td class="py-3 max-w-2 font-semibold text-xs text-center">
               <span :class="[
@@ -47,7 +48,7 @@
             <td class="py-3">
               ${{ item.market_cap_change_24h.toLocaleString() }}
             </td>
-            <td class="py-3 p-2">
+            <td class="px-4 py-3">
               <ClientOnly>
                 <apexchart height="50px" width="150px" type="line"
                   :options="getChartOptions(item.price_change_percentage_24h)"
@@ -64,18 +65,26 @@
   </div>
 
   <div class="flex space-x-2 justify-center items-center">
-    <div class="flex items-center bg-tokena-blue text-white rounded-lg px-3 py-1.5 cursor-pointer" @click="prev">
-      &lt;
+    <!-- Bouton précédent -->
+    <div class="flex items-center text-black rounded-lg px-4 py-2 cursor-pointer" @click="prev">
+     <img src="/icons/previous-arrow-icon.svg" alt="Previous arrow icon"/>
     </div>
-    <div class="flex items-center rounded-lg px-3 py-1.5 cursor-pointer border border-tokena-blue text-tokena-blue"
-      :class="{ 'bg-tokena-blue bg-opacity-20': page === i + 1 }" @click="navigate(i + 1)"
-      v-for="(index, i) in marketLists.length / itemperpage" :key="i">
-      {{ i + 1 }}
+
+    <!-- Pages visibles avec gestion des pointillés -->
+    <div v-for="(pageItem, index) in visiblePages" :key="index"
+      class="flex items-center rounded-lg px-3 py-1.5 cursor-pointer text-tokena-blue"
+      :class="{ 'bg-tokena-blue text-white': page === pageItem }" @click="navigate(pageItem)">
+      <!-- Affiche les pages ou les pointillés -->
+      <span>{{ pageItem }}</span>
     </div>
-    <div class="flex items-center bg-tokena-blue text-white rounded-lg px-3 py-1.5 cursor-pointer" @click="next">
-      &gt;
+
+    <!-- Bouton suivant -->
+    <div class="flex items-center text-black rounded-lg px-3 py-1.5 cursor-pointer" @click="next">
+      <img src="/icons/next-arrow-icon.svg" alt="Next arrow icon" />
     </div>
   </div>
+
+
 </template>
 
 <script setup>
@@ -96,6 +105,44 @@ const copyMarketList = computed(() => {
   return marketLists.value.slice(start, end);
 });
 
+const visiblePages = computed(() => {
+  const totalVisible = 2; // Nombre de pages visibles autour de la page actuelle
+  const pages = [];
+  
+  // Toujours afficher la première page
+  if (totalPages.value > 1) pages.push(1);
+  
+  // Si la page actuelle est suffisamment éloignée du début, afficher des points de suspension
+  if (page.value > totalVisible + 2) {
+    pages.push('...');
+  }
+  
+  // Pages autour de la page actuelle
+  const startPage = Math.max(2, page.value - totalVisible);
+  const endPage = Math.min(totalPages.value - 1, page.value + totalVisible);
+
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i);
+  }
+
+  // Si la page actuelle est suffisamment éloignée de la fin, afficher des points de suspension
+  if (page.value < totalPages.value - totalVisible - 1) {
+    pages.push('...');
+  }
+
+  // Toujours afficher la dernière page
+  if (totalPages.value > 1) pages.push(totalPages.value);
+
+  return pages;
+});
+
+
+const navigate = (clickedPage) => {
+  if (clickedPage !== '...') {
+    page.value = clickedPage;
+  }
+};
+
 // Navigation entre les pages
 const prev = () => {
   if (page.value > 1) {
@@ -109,10 +156,6 @@ const next = () => {
   }
 };
 
-const navigate = (clickedPage) => {
-  page.value = clickedPage;
-};
-
 // Surveiller les changements de page et d'éléments par page
 watch([page, itemperpage], () => {
   // Quand page ou itemperpage change, le computed `copyMarketList` est automatiquement mis à jour
@@ -124,7 +167,8 @@ const chartOptions = ref({
     zoom: { enabled: false },
     toolbar: { show: false },
     sparkline: { enabled: true },
-    width: "50px",
+    width: "150px", // Fixe la largeur
+    height: "50px", // Fixe la hauteur
   },
   grid: { show: false },
   stroke: { width: 0.5 },
@@ -148,8 +192,8 @@ const chartOptions = ref({
       breakpoint: 1000000,
       options: {
         chart: {
-          width: "40%",
-          height: "30%",
+          width: "100px",  // Largeur minimale fixée
+          height: "50px",  // Hauteur minimale fixée
         },
       },
     },

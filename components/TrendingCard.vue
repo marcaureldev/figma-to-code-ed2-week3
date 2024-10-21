@@ -24,7 +24,7 @@ const pricePercent = props.trending.item.data.price_change_percentage_24h.aed;
 
 <template>
 	<div class="border p-3 xl:max-w-52 rounded-lg">
-		<div class="flex justify-between items-start">
+		<div class="flex space-x-3 justify-between items-start">
 			<div class="flex space-x-2 ">
 				<div class="w-9 h-9 rounded-full bg-cover bg-center" :style="{ backgroundImage: background }"></div>
 				<div>
@@ -33,12 +33,12 @@ const pricePercent = props.trending.item.data.price_change_percentage_24h.aed;
 				</div>
 			</div>
 			<span v-if="trending.item.data.price_change_percentage_24h.aed > 0"
-				class="flex items-center p-1 bg-tokena-green font-semibold bg-opacity-[15%] lg:text-xs text-tokena-green rounded-full">
+				class="flex items-center p-1 bg-tokena-green font-semibold bg-opacity-[15%] text-xs text-tokena-green rounded-full">
 				{{ pricePercent.toFixed(2) }}%
 				<img src="/icons/trade-up-icon.svg" alt="Trade down icon" class="w-4" />
 			</span>
 			<span v-else
-				class="flex items-center p-1 bg-tokena-red font-semibold bg-opacity-[15%] lg:text-xs text-tokena-red rounded-full">
+				class="flex items-center p-1 bg-tokena-red font-semibold bg-opacity-[15%] text-xs text-tokena-red rounded-full">
 				{{ pricePercent.toFixed(2) }}%
 				<img src="/icons/trade-down-icon.svg" alt="Trade down icon" class="w-4" />
 			</span>

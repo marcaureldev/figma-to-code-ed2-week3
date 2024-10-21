@@ -11,9 +11,9 @@
             </div>
         </div> -->
 
-        <div class="hidden py-8 lg:flex lg:flex-col space-y-10 w-64 border-r h-full fixed top-0 left-0 z-30">
+        <div class="hidden py-8 lg:flex lg:flex-col  w-64 border-r h-full fixed top-0 left-0 z-30">
             <AsidebarMenu />
-            <div class="mt-auto">
+            <div class="mt-auto p-4">
                 UserItem
             </div>
         </div>

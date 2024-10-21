@@ -42,7 +42,7 @@ console.log(trendingInfo)
       </div>
     </div>
 
-    <div class="flex justify-between items-center py-4">
+    <div class="sm:flex space-y-5 sm:space-y-0 justify-between items-center py-4">
       <div class="flex space-x-2 items-center border-tokena-gray border p-2 rounded-lg w-72">
         <img src="/icons/search-icon.svg" alt="Search Icon">
         <input type="text" class="focus:outline-none" placeholder="Search">
