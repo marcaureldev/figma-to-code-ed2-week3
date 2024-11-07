@@ -1,5 +1,5 @@
 <template>
-    <div class="space-y-3">
+    <div class="space-y-3 mt-8 lg:mt-0">
         <header class="flex items-center gap-2 p-3 hover:scale-[101%] transition cursor-pointer bg-tokena-dark-2
             bg-opacity-[7%] w-52 mt- mx-5 lg:mx-auto rounded-md">
             <img src="/icons/logo.svg" alt="Logo" />
@@ -10,10 +10,12 @@
         </header>
 
         <div class="px-4 grow">
-            <div class="grid gap-3">
+            <div class="grid gap-3 mt-4">
+                <p class="text-lg text-tokena-dark-gray mb-4">Menu</p>
                 <NuxtLink :to="item.path" v-for="(item, index) in items" :key="index"
-                    class="flex items-center gap-2 px-4 py-1 transition rounded cursor-pointer hover:bg-neutral-100">
-                    <img :src="item.icon" :alt="item.title" />
+                    class="flex items-center gap-2 px-4 py-1 transition rounded-lg cursor-pointer"
+                    :class="{ 'bg-tokena-blue px-4 py-2.5 text-white': $route.path === item.path }">
+                    <img :src="$route.path === item.path ? item.iconWhite : item.icon" :alt="item.title" class="w-6" />
                     <span>{{ item.title }}</span>
                 </NuxtLink>
             </div>
@@ -23,16 +25,19 @@
 
 
 <script setup>
+const route = useRoute()
 const items = ref([
     {
         title: "Dashboard",
         path: "/",
         icon: "/icons/home.svg",
+        iconWhite: "/icons/home-white-icon.svg",
     },
     {
         title: "News",
         path: "/news",
         icon: "/icons/news-icon.svg",
+        iconWhite: "/icons/news-white-icon.svg",
     },
     {
         title: "Activities",

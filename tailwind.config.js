@@ -23,6 +23,9 @@ module.exports = {
         'tokena-dark-gray': '#6B7280',
         'tokena-red': '#CB0101',
       },
+      backgroundImage: {
+        'avatar-john-icon': 'url(/icons/avatar-john-icon.svg)',
+      },
     },
   },
   plugins: [],

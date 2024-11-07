@@ -4,17 +4,15 @@
             <img src="/icons/burger-menu-icon.svg" alt="Burger-menu" @click="menuOpen" class="lg:hidden size-6">
             <Navbar class="lg:hidden" />
         </div>
-        <!-- <div class="hidden lg:flex w-64 space-y-10 flex-col justify-between border-r">
-            <SidebarMenu />
-            <div>
-                UserItem
-            </div>
-        </div> -->
-
-        <div class="hidden py-8 lg:flex lg:flex-col  w-64 border-r h-full fixed top-0 left-0 z-30">
+        
+        <div class="hidden py-8 lg:flex lg:flex-col text-sm w-64 border-r h-full fixed top-0 left-0 z-30 overflow-y-auto">
             <AsidebarMenu />
-            <div class="mt-auto p-4">
-                UserItem
+            <div class="flex space-x-3 items-center mt-auto p-6">
+                <div class="bg-avatar-john-icon bg-no-repeat bg-cover bg-center w-10 h-10 rounded-full"></div>
+                <div class="text-xs">
+                   <p>John Doe</p>
+                   <p>johndoe@gmail.com</p>
+                </div>
             </div>
         </div>
 
