@@ -8,17 +8,49 @@ import type {
 const UPSTREAM = 'https://cryptocurrency.cv/api/v1/news'
 
 /**
- * Upstream pins an Ethereum gas-price ticker to the top of every category.
- * It is a live reading, not an article.
+ * cryptocurrency.cv aggregates 358 feeds, most of which are not newsrooms:
+ * central-bank speeches, a general finance wire, protocol marketing blogs and
+ * user-submitted chart setups. Its `category` field does not separate them —
+ * a sports podcast arrives tagged `bitcoin` — so the feed is filtered by
+ * source instead, which is the only field that reliably tracks editorial
+ * origin. Measured over 100 articles, this keeps 22% of them, 91% of which
+ * carry artwork.
  */
-const EXCLUDED_SOURCES = new Set(['etherscan_gas'])
-
-/**
- * The feed carries a general finance and politics wire alongside its crypto
- * coverage — US healthcare, equities, elections. These categories are where
- * that lands, and none of it belongs on a crypto dashboard.
- */
-const EXCLUDED_CATEGORIES = new Set(['mainstream', 'macro', 'geopolitical', 'tradfi'])
+const CRYPTO_NEWSROOMS = new Set([
+  'BeInCrypto',
+  'Bitcoin Magazine',
+  'Bitcoin.com News',
+  'Bitcoinist',
+  'Blockhead',
+  'Blockworks',
+  'CoinCentral',
+  'CoinDesk',
+  'CoinJournal',
+  'CoinPost (EN)',
+  'CoinTelegraph',
+  'Coinlive',
+  'Coinspeaker',
+  'Crypto Briefing',
+  'Crypto Daily',
+  'Crypto-News Flash',
+  'CryptoGlobe',
+  'CryptoNewsZ',
+  'CryptoSlate',
+  'Cryptopolitan',
+  'Decrypt',
+  'Forkast News',
+  'InsideBitcoins',
+  'NewsBTC',
+  'Protos',
+  'The Block',
+  'The Daily Hodl',
+  'The Defiant',
+  'TheCryptoBasic',
+  'TheNewsCrypto',
+  'U.Today',
+  'Unchained Crypto',
+  'Watcher Guru',
+])
 
 /** Longest excerpt a news card can show before it is visually truncated anyway. */
 const MAX_EXCERPT = 180
@@ -26,8 +58,12 @@ const MAX_EXCERPT = 180
 /** Enough to fill the News grid; filtering can empty an upstream page. */
 const MIN_ARTICLES = 8
 
-/** Ceiling on upstream requests per call, so one page view cannot fan out. */
-const MAX_UPSTREAM_FETCHES = 3
+/**
+ * Ceiling on upstream requests per call, so one page view cannot fan out.
+ * Filtering yields roughly four articles per upstream page, so filling the
+ * grid normally costs two.
+ */
+const MAX_UPSTREAM_FETCHES = 4
 
 const HTML_ENTITIES: Record<string, string> = {
   '&amp;': '&',
@@ -56,8 +92,7 @@ const truncate = (value: string, max: number): string =>
 /** Keep only genuine, on-topic articles that have enough to render a card. */
 const isPublishable = (article: UpstreamArticle): boolean =>
   article.contentType === 'news'
-  && !EXCLUDED_SOURCES.has(article.sourceKey)
-  && !EXCLUDED_CATEGORIES.has(article.category)
+  && CRYPTO_NEWSROOMS.has(article.source)
   && Boolean(article.title?.trim())
   && Boolean(article.link?.trim())
 
