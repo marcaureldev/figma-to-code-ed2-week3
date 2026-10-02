@@ -1,21 +1,16 @@
-<template>
-    <div class="max-w-screen-xl mx-auto grid lg:ml-56 lg:flex items-start">
-        <div>
-            <Asidebar />
-        </div>
-        <div class="space-y-4 overflow-hidden">
-            <Navbar class="hidden lg:flex border-b p-6" />
-            <div class="w-full py-4">
-                <slot />
-            </div>
-        </div>
-    </div>
-</template>
-
-<script>
-export default {
-
-}
+<script setup lang="ts">
+// The sidebar is fixed at 240px from `lg` up, so the content is inset to match.
 </script>
 
-<style></style>
+<template>
+  <div class="min-h-screen bg-white dark:bg-tokena-dark-blue-1">
+    <LayoutSidebar />
+
+    <div class="lg:pl-60">
+      <LayoutTopNav />
+      <main class="px-4 py-5 sm:px-6">
+        <slot />
+      </main>
+    </div>
+  </div>
+</template>

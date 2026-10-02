@@ -2,30 +2,41 @@ import type { MarketCoin } from '~/types/coin'
 
 const COINGECKO_MARKETS = 'https://api.coingecko.com/api/v3/coins/markets'
 
+/** CoinGecko's maximum page size, and more rows than the table ever paginates. */
+const PER_PAGE = 100
+
 /**
  * Fetches the market table rows.
  *
  * `data` is `null` until the request resolves, and stays `null` when it fails,
- * so every consumer must cope with an empty list. CoinGecko rate-limits
- * anonymous callers fairly aggressively, which makes that a routine case
- * rather than an edge one.
+ * so `coins` always normalises to an array: CoinGecko rate-limits anonymous
+ * callers fairly aggressively, which makes failure a routine case.
+ *
+ * Passing a `category` ref re-runs the request whenever it changes, because
+ * the category is applied by the API, not by us — the market payload carries
+ * no category field to filter on.
  */
-export const useMarkets = () => {
+export const useMarkets = (options: { category?: Ref<string> } = {}) => {
+  const category = options.category ?? ref('')
+
   const { data, error, status, refresh } = useFetch<MarketCoin[]>(COINGECKO_MARKETS, {
-    key: 'coingecko-markets',
     query: {
       vs_currency: 'usd',
-      per_page: 100,
+      per_page: PER_PAGE,
       page: 1,
       sparkline: true,
+      // An empty string would be sent as a real filter, so drop it instead.
+      category: computed(() => category.value || undefined),
     },
   })
 
-  /** Always a usable array, whatever the request did. */
   const coins = computed<MarketCoin[]>(() => data.value ?? [])
 
-  const isLoading = computed(() => status.value === 'pending')
-  const hasFailed = computed(() => status.value === 'error')
-
-  return { coins, error, isLoading, hasFailed, refresh }
+  return {
+    coins,
+    error,
+    isLoading: computed(() => status.value === 'pending'),
+    hasFailed: computed(() => status.value === 'error'),
+    refresh,
+  }
 }
