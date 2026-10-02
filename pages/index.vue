@@ -1,10 +1,5 @@
-<script setup>
-const { trendingInfo } = useTrendingInfo()
-
-const trendingInfos = trendingInfo?.value?.coins.slice(0, 4)
-
-console.log(trendingInfo)
-
+<script setup lang="ts">
+const { coins: trending } = useTrending()
 </script>
 
 <template>
@@ -37,7 +32,7 @@ console.log(trendingInfo)
       <div>
         <h2 class="text-lg font-semibold mb-1">Trending</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-          <TrendingCard v-for="(trending, index) in trendingInfos" :key="index" :trending="trending" />
+          <TrendingCard v-for="coin in trending" :key="coin.item.id" :trending="coin" />
         </div>
       </div>
     </div>
@@ -53,7 +48,6 @@ console.log(trendingInfo)
       </div>
     </div>
 
-    <Table></Table>
-
+    <Table />
   </div>
 </template>

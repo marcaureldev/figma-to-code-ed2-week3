@@ -24,10 +24,18 @@ export interface UpstreamArticle {
   reputation: number
 }
 
+export interface UpstreamPagination {
+  page: number
+  perPage: number
+  totalPages: number
+  hasMore: boolean
+}
+
 export interface UpstreamNewsResponse {
   articles: UpstreamArticle[]
   totalCount: number
   sources: unknown
+  pagination: UpstreamPagination
   fetchedAt: string
 }
 
@@ -49,5 +57,11 @@ export interface NewsArticle {
 
 export interface NewsResponse {
   articles: NewsArticle[]
+  /**
+   * Upstream page to request next, or `null` when the feed is exhausted.
+   * Drives the "Load more" button. It is not simply `page + 1`: filtering can
+   * make one of our pages span several upstream ones.
+   */
+  nextPage: number | null
   fetchedAt: string
 }
