@@ -89,6 +89,13 @@ const toPlainText = (value: string): string =>
 const truncate = (value: string, max: number): string =>
   value.length <= max ? value : `${value.slice(0, max).trimEnd()}…`
 
+/**
+ * Many feeds append a syndication footer — "The post <title> appeared first
+ * on <publication>." — which is boilerplate, not part of the story.
+ */
+const stripSyndicationFooter = (value: string): string =>
+  value.replace(/\s*The post\b[\s\S]*$/i, '').trim()
+
 /** Keep only genuine, on-topic articles that have enough to render a card. */
 const isPublishable = (article: UpstreamArticle): boolean =>
   article.contentType === 'news'
@@ -97,7 +104,9 @@ const isPublishable = (article: UpstreamArticle): boolean =>
   && Boolean(article.link?.trim())
 
 const normalise = (article: UpstreamArticle): NewsArticle => {
-  const excerpt = article.description ? toPlainText(article.description) : ''
+  const excerpt = article.description
+    ? stripSyndicationFooter(toPlainText(article.description))
+    : ''
 
   return {
     // Upstream exposes no id; the article URL is its natural key.
