@@ -1,19 +1,20 @@
-<template>
-  <div class="font-mona-sans">
-    <div>
-      <link rel="preload" href="Mona-Sans.woff2" as="font" type="font/woff2" crossorigin>
-    </div>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-  </div>
-</template>
-
-<script>
-export default {
-
-}
+<script setup lang="ts">
+useHead({
+  htmlAttrs: { lang: 'en' },
+  link: [
+    {
+      rel: 'preload',
+      href: '/fonts/MonaSans-Variable.woff2',
+      as: 'font',
+      type: 'font/woff2',
+      crossorigin: 'anonymous',
+    },
+  ],
+})
 </script>
 
-<style>
-</style>
+<template>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+</template>

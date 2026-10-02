@@ -1,3 +1,31 @@
+/*
+ * Mona Sans — the typeface used across the Tokena design system.
+ * Self-hosted from GitHub's official OFL release (see public/fonts/OFL.txt).
+ * One variable file covers every weight from 200 to 900.
+ */
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('/fonts/MonaSans-Variable.woff2') format('woff2');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('/fonts/MonaSans-Variable-Italic.woff2') format('woff2');
+  font-weight: 200 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-tokena-dark antialiased;
+    @apply dark:bg-tokena-dark-blue-1 dark:text-tokena-white;
+  }
+}

@@ -1,15 +1,33 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  compatibilityDate: '2024-08-21',
+
   devtools: { enabled: true },
-  css: ['~/assets/css/main.css',],
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
+
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode'],
+
+  // Point the Tailwind module at our stylesheet so it does not inject a second,
+  // default one. It handles registering the file, so `css:` is not needed.
+  tailwindcss: {
+    cssPath: '~/assets/css/main.css',
   },
 
-  plugins: [{ src: '~/plugins/apexchart.js', mode: 'client' }],
+  // `classSuffix: ''` makes the module toggle a plain `dark` class on <html>,
+  // which is what Tailwind's `darkMode: 'class'` strategy expects.
+  colorMode: {
+    classSuffix: '',
+    preference: 'light',
+    fallback: 'light',
+    storageKey: 'tokena-color-mode',
+  },
 
-  compatibilityDate: '2024-08-21',
+  typescript: {
+    strict: true,
+    // Checked on demand via `pnpm typecheck` rather than on every build.
+    typeCheck: false,
+  },
+
+  experimental: {
+    typedPages: true,
+  },
 })
