@@ -1,7 +1,5 @@
 import type { TrendingCoin, TrendingResponse } from '~/types/coin'
 
-const COINGECKO_TRENDING = 'https://api.coingecko.com/api/v3/search/trending'
-
 /** How many trending cards the dashboard shows. */
 const TRENDING_LIMIT = 4
 
@@ -13,7 +11,9 @@ const TRENDING_LIMIT = 4
  * at that point, and the row would silently stay empty.
  */
 export const useTrending = () => {
-  const { data, error, status, refresh } = useFetch<TrendingResponse>(COINGECKO_TRENDING, {
+  const { coingeckoApiBase } = useRuntimeConfig().public
+
+  const { data, error, status, refresh } = useFetch<TrendingResponse>(`${coingeckoApiBase}/search/trending`, {
     key: 'coingecko-trending',
   })
 

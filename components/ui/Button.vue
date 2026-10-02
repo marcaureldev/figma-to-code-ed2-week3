@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { NuxtLink } from '#components'
 import type { IconName } from '~/components/ui/icons'
 
 type ButtonVariant = 'primary' | 'outline' | 'ghost'
@@ -38,7 +39,7 @@ const classes = computed(() => `${VARIANTS[props.variant]} ${SIZES[props.size]}`
 
 <template>
   <component
-    :is="to ? resolveComponent('NuxtLink') : 'button'"
+    :is="to ? NuxtLink : 'button'"
     :to="to"
     :type="to ? undefined : type"
     class="inline-flex items-center justify-center gap-1.5 rounded-[10px] border px-5 py-2.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60"

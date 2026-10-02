@@ -30,4 +30,17 @@ export default defineNuxtConfig({
   experimental: {
     typedPages: true,
   },
+
+  /**
+   * API endpoints. Every value is overridable at runtime through the matching
+   * NUXT_* environment variable, so no base URL is pinned into the bundle.
+   */
+  runtimeConfig: {
+    // Server-only: the news feed is proxied, never called from the browser.
+    newsApiBase: 'https://cryptocurrency.cv/api/v1',
+    newsRequestTimeoutMs: '10000',
+    public: {
+      coingeckoApiBase: 'https://api.coingecko.com/api/v3',
+    },
+  },
 })

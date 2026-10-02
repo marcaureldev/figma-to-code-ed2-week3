@@ -1,7 +1,5 @@
 import type { SelectOption } from '~/components/ui/Select.vue'
 
-const COINGECKO_CATEGORIES = 'https://api.coingecko.com/api/v3/coins/categories/list'
-
 interface CoinCategory {
   category_id: string
   name: string
@@ -15,7 +13,9 @@ interface CoinCategory {
  * <option> markup to every page load for a control most readers never open.
  */
 export const useCoinCategories = () => {
-  const { data, status } = useFetch<CoinCategory[]>(COINGECKO_CATEGORIES, {
+  const { coingeckoApiBase } = useRuntimeConfig().public
+
+  const { data, status } = useFetch<CoinCategory[]>(`${coingeckoApiBase}/coins/categories/list`, {
     key: 'coingecko-categories',
     server: false,
     lazy: true,

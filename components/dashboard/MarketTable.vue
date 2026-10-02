@@ -104,11 +104,23 @@ const sparklineSeries = (prices: number[]) => [{ name: 'Price', data: prices }]
         </tbody>
       </table>
 
-      <p v-else class="p-8 text-center text-sm text-tokena-dark-gray dark:text-tokena-gray">
-        <template v-if="isLoading">Loading the market…</template>
-        <template v-else-if="hasFailed">The market data is unavailable right now. Please try again shortly.</template>
-        <template v-else>No cryptocurrency matches your search.</template>
-      </p>
+      <div v-else-if="isLoading" class="space-y-3 p-4">
+        <UiSkeleton v-for="index in 6" :key="index" class="h-10 w-full" />
+      </div>
+
+      <UiEmptyState
+        v-else-if="hasFailed"
+        icon="chart"
+        title="Market data is unavailable"
+        description="CoinGecko did not answer. Anonymous callers get rate limited fairly often, so this usually clears on its own."
+      />
+
+      <UiEmptyState
+        v-else
+        icon="search"
+        title="No cryptocurrency found"
+        description="Nothing matches this search and category. Try a different term."
+      />
     </div>
   </UiCard>
 </template>
