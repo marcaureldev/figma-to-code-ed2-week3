@@ -12,6 +12,7 @@ export default defineNuxtConfig({
 
   eslint: {
     config: {
+      // Prettier owns formatting, so ESLint only reports real defects.
       stylistic: false,
     },
   },
