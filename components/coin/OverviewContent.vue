@@ -77,7 +77,7 @@ const chartOptions = computed(() => {
       <h2
         class="truncate text-base font-bold text-tokena-dark dark:text-tokena-light-gray"
       >
-        {{ detail?.name ?? 'Loading…' }}
+        {{ detail?.name ?? 'Loading...' }}
       </h2>
       <button
         type="button"
