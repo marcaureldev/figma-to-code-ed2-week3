@@ -27,11 +27,13 @@ const tone = computed(() =>
           class="size-8 shrink-0 rounded-full object-cover"
         />
         <div class="min-w-0 flex-1">
-          <p
-            class="truncate text-xs font-bold leading-4 text-tokena-dark-gray dark:text-tokena-light-gray"
-          >
-            {{ item.name }}
-          </p>
+          <UiTooltip :label="item.name" class="w-full">
+            <p
+              class="truncate text-xs font-bold leading-4 text-tokena-dark-gray dark:text-tokena-light-gray"
+            >
+              {{ item.name }}
+            </p>
+          </UiTooltip>
           <p
             class="text-xxs font-bold uppercase text-tokena-dark-gray/60 dark:text-tokena-gray/60"
           >

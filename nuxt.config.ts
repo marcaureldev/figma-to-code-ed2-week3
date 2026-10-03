@@ -4,10 +4,16 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxt/eslint'],
 
   tailwindcss: {
     cssPath: '~/assets/css/main.css',
+  },
+
+  eslint: {
+    config: {
+      stylistic: false,
+    },
   },
 
   colorMode: {
