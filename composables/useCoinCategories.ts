@@ -23,7 +23,7 @@ export const useCoinCategories = () => {
 
   const options = computed<SelectOption[]>(() =>
     (data.value ?? [])
-      .map(category => ({ label: category.name, value: category.category_id }))
+      .map((category) => ({ label: category.name, value: category.category_id }))
       .sort((a, b) => a.label.localeCompare(b.label)),
   )
 

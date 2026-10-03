@@ -47,7 +47,9 @@ const sparklineSeries = (prices: number[]) => [{ name: 'Price', data: prices }]
     <div class="w-full overflow-x-auto">
       <!-- The header stays put while rows load, so the columns do not jump. -->
       <table v-if="isLoading || coins.length" class="w-full border-collapse">
-        <thead class="bg-tokena-light-gray text-tokena-dark dark:bg-tokena-dark-blue-2 dark:text-tokena-light-gray">
+        <thead
+          class="bg-tokena-light-gray text-tokena-dark dark:bg-tokena-dark-blue-2 dark:text-tokena-light-gray"
+        >
           <tr class="whitespace-nowrap text-left text-sm font-medium">
             <th class="w-12 px-4 py-3"><span class="sr-only">Favourite</span></th>
             <th class="px-4 py-3 font-medium">#</th>
@@ -93,35 +95,57 @@ const sparklineSeries = (prices: number[]) => [{ name: 'Price', data: prices }]
               <button
                 type="button"
                 class="transition-colors"
-                :class="isFavorite(coin.id) ? 'text-tokena-blue' : 'text-tokena-dark hover:text-tokena-blue dark:text-tokena-light-gray'"
-                :aria-label="isFavorite(coin.id) ? `Remove ${coin.name} from favourites` : `Add ${coin.name} to favourites`"
+                :class="
+                  isFavorite(coin.id)
+                    ? 'text-tokena-blue'
+                    : 'text-tokena-dark hover:text-tokena-blue dark:text-tokena-light-gray'
+                "
+                :aria-label="
+                  isFavorite(coin.id)
+                    ? `Remove ${coin.name} from favourites`
+                    : `Add ${coin.name} to favourites`
+                "
                 :aria-pressed="isFavorite(coin.id)"
                 @click.stop="toggle(coin.id)"
               >
                 <UiIcon name="star" :size="20" />
               </button>
             </td>
-            <td class="px-4 py-3 text-tokena-dark dark:text-tokena-light-gray">{{ coin.market_cap_rank }}</td>
+            <td class="px-4 py-3 text-tokena-dark dark:text-tokena-light-gray">
+              {{ coin.market_cap_rank }}
+            </td>
             <td class="px-4 py-3">
               <button
                 type="button"
                 class="flex items-center gap-2 text-left transition-colors hover:text-tokena-blue"
                 @click.stop="open(coin.id)"
               >
-                <img :src="coin.image" :alt="coin.name" width="24" height="24" class="size-6 shrink-0 rounded-full">
+                <img
+                  :src="coin.image"
+                  :alt="coin.name"
+                  width="24"
+                  height="24"
+                  class="size-6 shrink-0 rounded-full"
+                />
                 <span class="font-medium text-tokena-dark dark:text-tokena-light-gray">
                   {{ coin.name }}-<span class="uppercase">{{ coin.symbol }}</span>
                 </span>
               </button>
             </td>
-            <td class="px-4 py-3 text-tokena-dark dark:text-tokena-light-gray">{{ formatPrice(coin.current_price) }}</td>
+            <td class="px-4 py-3 text-tokena-dark dark:text-tokena-light-gray">
+              {{ formatPrice(coin.current_price) }}
+            </td>
             <td class="px-4 py-3">
               <UiBadge :tone="coin.price_change_percentage_24h < 0 ? 'negative' : 'positive'">
                 {{ formatPercent(coin.price_change_percentage_24h) }}
               </UiBadge>
             </td>
-            <td class="px-4 py-3 text-tokena-dark dark:text-tokena-light-gray">{{ formatUsd(coin.total_volume) }}</td>
-            <td class="px-4 py-3 text-tokena-dark dark:text-tokena-light-gray">{{ formatUsd(coin.market_cap) }}</td>
+            <td class="px-4 py-3 text-tokena-dark dark:text-tokena-light-gray">
+              {{ formatUsd(coin.total_volume) }}
+            </td>
+            <td class="px-4 py-3 text-tokena-dark dark:text-tokena-light-gray">
+              {{ formatUsd(coin.market_cap) }}
+            </td>
             <td class="px-4 py-3">
               <ClientOnly>
                 <apexchart

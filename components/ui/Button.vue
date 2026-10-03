@@ -22,11 +22,11 @@ const props = withDefaults(
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: 'border-tokena-blue bg-tokena-blue text-white hover:bg-tokena-dark-2',
   outline:
-    'border-tokena-gray bg-white text-tokena-dark hover:bg-tokena-light-gray '
-    + 'dark:border-tokena-dark-gray dark:bg-tokena-dark-blue-1 dark:text-tokena-light-gray dark:hover:bg-tokena-dark-blue-2',
+    'border-tokena-gray bg-white text-tokena-dark hover:bg-tokena-light-gray ' +
+    'dark:border-tokena-dark-gray dark:bg-tokena-dark-blue-1 dark:text-tokena-light-gray dark:hover:bg-tokena-dark-blue-2',
   ghost:
-    'border-white bg-tokena-blue/[0.06] text-tokena-blue hover:bg-tokena-blue/[0.14] '
-    + 'dark:border-transparent dark:bg-tokena-blue/[0.14] dark:hover:bg-tokena-blue/[0.22]',
+    'border-white bg-tokena-blue/[0.06] text-tokena-blue hover:bg-tokena-blue/[0.14] ' +
+    'dark:border-transparent dark:bg-tokena-blue/[0.14] dark:hover:bg-tokena-blue/[0.22]',
 }
 
 const SIZES: Record<ButtonSize, string> = {

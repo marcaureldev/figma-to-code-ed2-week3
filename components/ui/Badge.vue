@@ -26,6 +26,10 @@ const toneClasses = computed(() => TONES[props.tone])
     :class="toneClasses"
   >
     <slot />
-    <UiIcon v-if="withTrendIcon && tone !== 'neutral'" :name="tone === 'positive' ? 'trade-up' : 'trade-down'" :size="12" />
+    <UiIcon
+      v-if="withTrendIcon && tone !== 'neutral'"
+      :name="tone === 'positive' ? 'trade-up' : 'trade-down'"
+      :size="12"
+    />
   </span>
 </template>

@@ -15,9 +15,17 @@ const tone = computed(() => (changePercent.value >= 0 ? 'positive' : 'negative')
   <UiCard class="flex flex-col gap-2.5 p-3">
     <div class="flex items-center gap-1.5">
       <div class="flex min-w-0 flex-1 items-center gap-1">
-        <img :src="item.thumb" :alt="item.name" width="32" height="32" class="size-8 shrink-0 rounded-full object-cover">
+        <img
+          :src="item.thumb"
+          :alt="item.name"
+          width="32"
+          height="32"
+          class="size-8 shrink-0 rounded-full object-cover"
+        />
         <div class="min-w-0 flex-1">
-          <p class="truncate text-xs font-bold leading-4 text-tokena-dark-gray dark:text-tokena-light-gray">
+          <p
+            class="truncate text-xs font-bold leading-4 text-tokena-dark-gray dark:text-tokena-light-gray"
+          >
             {{ item.name }}
           </p>
           <p class="text-xxs font-bold uppercase text-tokena-dark-gray/60 dark:text-tokena-gray/60">

@@ -25,7 +25,10 @@ defineEmits<{ action: [] }>()
 
     <div class="space-y-1">
       <p class="text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray">{{ title }}</p>
-      <p v-if="description" class="max-w-sm text-xs font-medium text-tokena-dark-gray dark:text-tokena-gray">
+      <p
+        v-if="description"
+        class="max-w-sm text-xs font-medium text-tokena-dark-gray dark:text-tokena-gray"
+      >
         {{ description }}
       </p>
     </div>

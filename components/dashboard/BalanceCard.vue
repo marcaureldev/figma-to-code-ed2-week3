@@ -13,10 +13,14 @@ const CHANGE_PERCENT = 2.3
       <p class="text-lg font-semibold text-tokena-dark dark:text-tokena-light-gray">Balance</p>
 
       <div class="flex flex-wrap items-center gap-1.5">
-        <p class="text-lg font-bold text-tokena-dark dark:text-white">{{ formatUsd(BALANCE_USD) }}</p>
+        <p class="text-lg font-bold text-tokena-dark dark:text-white">
+          {{ formatUsd(BALANCE_USD) }}
+        </p>
         <div class="flex items-center gap-1.5">
           <UiBadge tone="positive">{{ formatPercent(CHANGE_PERCENT) }}</UiBadge>
-          <p class="text-xs font-medium text-tokena-dark-gray dark:text-tokena-gray">vs last month</p>
+          <p class="text-xs font-medium text-tokena-dark-gray dark:text-tokena-gray">
+            vs last month
+          </p>
         </div>
       </div>
     </div>

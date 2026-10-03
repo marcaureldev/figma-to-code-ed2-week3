@@ -33,8 +33,7 @@ const sourceIcon = computed(() => {
   try {
     const { hostname } = new URL(props.article.url)
     return `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`
-  }
-  catch {
+  } catch {
     return null
   }
 })
@@ -60,14 +59,17 @@ const sourceInitial = computed(() => props.article.source.charAt(0).toUpperCase(
           class="size-8 shrink-0 rounded-full bg-tokena-light-gray object-cover dark:bg-tokena-dark-blue-2"
           loading="lazy"
           @error="iconFailed = true"
-        >
+        />
         <span
           v-else
           class="grid size-8 shrink-0 place-items-center rounded-full bg-tokena-light-gray text-xs font-semibold text-tokena-dark-gray dark:bg-tokena-dark-blue-2 dark:text-tokena-gray"
           aria-hidden="true"
-        >{{ sourceInitial }}</span>
+          >{{ sourceInitial }}</span
+        >
         <div class="min-w-0 flex-1 text-xs leading-4">
-          <p class="truncate font-semibold text-tokena-dark dark:text-tokena-light-gray">{{ article.source }}</p>
+          <p class="truncate font-semibold text-tokena-dark dark:text-tokena-light-gray">
+            {{ article.source }}
+          </p>
           <p class="truncate font-normal text-tokena-dark-gray dark:text-tokena-gray">{{ meta }}</p>
         </div>
       </div>
@@ -80,14 +82,22 @@ const sourceInitial = computed(() => props.article.source.charAt(0).toUpperCase(
         class="aspect-[319/194] w-full rounded-[10px] bg-tokena-light-gray object-cover dark:bg-tokena-dark-blue-2"
         loading="lazy"
         @error="imageFailed = true"
-      >
-      <div v-else class="aspect-[319/194] w-full rounded-[10px] bg-tokena-light-gray dark:bg-tokena-dark-blue-2" />
+      />
+      <div
+        v-else
+        class="aspect-[319/194] w-full rounded-[10px] bg-tokena-light-gray dark:bg-tokena-dark-blue-2"
+      />
 
       <div class="flex flex-1 flex-col gap-1.5">
-        <h3 class="text-xs font-semibold italic leading-4 text-tokena-dark dark:text-tokena-light-gray">
+        <h3
+          class="text-xs font-semibold italic leading-4 text-tokena-dark dark:text-tokena-light-gray"
+        >
           {{ article.title }}
         </h3>
-        <p v-if="article.excerpt" class="text-xs font-medium leading-4 text-tokena-dark-gray dark:text-tokena-gray">
+        <p
+          v-if="article.excerpt"
+          class="text-xs font-medium leading-4 text-tokena-dark-gray dark:text-tokena-gray"
+        >
           {{ article.excerpt }}
         </p>
       </div>

@@ -13,9 +13,12 @@ const TRENDING_LIMIT = 4
 export const useTrending = () => {
   const { coingeckoApiBase } = useRuntimeConfig().public
 
-  const { data, error, status, refresh } = useFetch<TrendingResponse>(`${coingeckoApiBase}/search/trending`, {
-    key: 'coingecko-trending',
-  })
+  const { data, error, status, refresh } = useFetch<TrendingResponse>(
+    `${coingeckoApiBase}/search/trending`,
+    {
+      key: 'coingecko-trending',
+    },
+  )
 
   const coins = computed<TrendingCoin[]>(() => data.value?.coins?.slice(0, TRENDING_LIMIT) ?? [])
 

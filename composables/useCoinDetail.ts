@@ -38,9 +38,7 @@ export const useCoinDetail = (coinId: string) => {
   const isLoading = computed(
     () => detailStatus.value === 'pending' || chartStatus.value === 'pending',
   )
-  const hasFailed = computed(
-    () => detailStatus.value === 'error' || chartStatus.value === 'error',
-  )
+  const hasFailed = computed(() => detailStatus.value === 'error' || chartStatus.value === 'error')
 
   return { detail, chart, isLoading, hasFailed }
 }

@@ -4,7 +4,9 @@
 </script>
 
 <template>
-  <div class="rounded-xl border border-tokena-light-gray bg-white dark:border-tokena-gray/15 dark:bg-tokena-dark-blue-1">
+  <div
+    class="rounded-xl border border-tokena-light-gray bg-white dark:border-tokena-gray/15 dark:bg-tokena-dark-blue-1"
+  >
     <slot />
   </div>
 </template>

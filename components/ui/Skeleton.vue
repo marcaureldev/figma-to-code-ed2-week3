@@ -15,5 +15,5 @@ const SHAPES = {
 </script>
 
 <template>
-  <div class="skeleton" :class="SHAPES[variant]" aria-hidden="true" ></div>
+  <div class="skeleton" :class="SHAPES[variant]" aria-hidden="true"></div>
 </template>

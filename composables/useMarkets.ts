@@ -18,16 +18,19 @@ export const useMarkets = (options: { category?: Ref<string> } = {}) => {
   const { coingeckoApiBase } = useRuntimeConfig().public
   const category = options.category ?? ref('')
 
-  const { data, error, status, refresh } = useFetch<MarketCoin[]>(`${coingeckoApiBase}/coins/markets`, {
-    query: {
-      vs_currency: 'usd',
-      per_page: PER_PAGE,
-      page: 1,
-      sparkline: true,
-      // An empty string would be sent as a real filter, so drop it instead.
-      category: computed(() => category.value || undefined),
+  const { data, error, status, refresh } = useFetch<MarketCoin[]>(
+    `${coingeckoApiBase}/coins/markets`,
+    {
+      query: {
+        vs_currency: 'usd',
+        per_page: PER_PAGE,
+        page: 1,
+        sparkline: true,
+        // An empty string would be sent as a real filter, so drop it instead.
+        category: computed(() => category.value || undefined),
+      },
     },
-  })
+  )
 
   const coins = computed<MarketCoin[]>(() => data.value ?? [])
 

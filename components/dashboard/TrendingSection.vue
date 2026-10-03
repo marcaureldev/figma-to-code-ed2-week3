@@ -15,11 +15,11 @@ const { coins, isLoading, hasFailed } = useTrending()
       </button>
     </div>
 
-    <div v-if="coins.length" class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div v-if="coins.length" class="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
       <DashboardTrendingCard v-for="coin in coins" :key="coin.item.id" :coin="coin" />
     </div>
 
-    <div v-else-if="isLoading" class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div v-else-if="isLoading" class="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
       <DashboardTrendingCardSkeleton v-for="index in 4" :key="index" />
     </div>
 
@@ -27,9 +27,11 @@ const { coins, isLoading, hasFailed } = useTrending()
       <UiEmptyState
         icon="trade-up"
         :title="hasFailed ? 'Trending is unavailable' : 'Nothing trending'"
-        :description="hasFailed
-          ? 'CoinGecko did not answer this one. It usually recovers within a minute.'
-          : 'No coin is trending right now.'"
+        :description="
+          hasFailed
+            ? 'CoinGecko did not answer this one. It usually recovers within a minute.'
+            : 'No coin is trending right now.'
+        "
       />
     </UiCard>
   </section>

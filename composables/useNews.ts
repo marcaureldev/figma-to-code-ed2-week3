@@ -38,16 +38,14 @@ export const useNews = () => {
 
       // The feed shifts as stories are published, so the same article can
       // surface again on a later page.
-      const alreadyShown = new Set(articles.value.map(article => article.id))
-      const fresh = response.articles.filter(article => !alreadyShown.has(article.id))
+      const alreadyShown = new Set(articles.value.map((article) => article.id))
+      const fresh = response.articles.filter((article) => !alreadyShown.has(article.id))
 
       articles.value = [...articles.value, ...fresh]
       nextPage.value = response.nextPage
-    }
-    catch {
+    } catch {
       loadMoreError.value = 'Could not load more articles. Please try again.'
-    }
-    finally {
+    } finally {
       isLoadingMore.value = false
     }
   }

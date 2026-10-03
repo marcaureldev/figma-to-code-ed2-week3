@@ -14,7 +14,7 @@ const matching = computed(() => {
   if (!term) return coins.value
 
   return coins.value.filter(
-    coin => coin.name.toLowerCase().includes(term) || coin.symbol.toLowerCase().includes(term),
+    (coin) => coin.name.toLowerCase().includes(term) || coin.symbol.toLowerCase().includes(term),
   )
 })
 
@@ -26,7 +26,9 @@ const visibleCoins = computed(() => {
 })
 
 // A narrower result set can leave the reader on a page that no longer exists.
-watch([search, category], () => { page.value = 1 })
+watch([search, category], () => {
+  page.value = 1
+})
 watch(totalPages, (count) => {
   if (count > 0 && page.value > count) page.value = count
 })

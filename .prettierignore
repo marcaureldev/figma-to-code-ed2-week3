@@ -1,0 +1,20 @@
+# Build output and dependencies
+.nuxt
+.output
+.nitro
+.cache
+dist
+node_modules
+
+# Lockfiles
+pnpm-lock.yaml
+package-lock.json
+
+# Generated: rewritten by scripts/generate-icons.mjs, not edited by hand
+components/ui/icons.ts
+
+# Binary and vendored assets
+public/fonts
+public/images
+*.svg
+*.ico

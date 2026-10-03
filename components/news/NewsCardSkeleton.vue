@@ -3,7 +3,9 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-2.5 rounded-xl border border-tokena-light-gray bg-white p-2.5 dark:border-tokena-gray/15 dark:bg-tokena-dark-blue-1">
+  <div
+    class="flex flex-col gap-2.5 rounded-xl border border-tokena-light-gray bg-white p-2.5 dark:border-tokena-gray/15 dark:bg-tokena-dark-blue-1"
+  >
     <div class="flex items-center gap-2">
       <UiSkeleton class="size-8 shrink-0 rounded-full" />
       <div class="flex-1 space-y-1">

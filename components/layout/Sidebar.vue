@@ -22,7 +22,7 @@ const { isOpen, close } = useSidebar()
         <UiLogo />
         <button
           type="button"
-          class="rounded-[10px] p-2 text-tokena-dark-gray lg:hidden dark:text-tokena-light-gray"
+          class="rounded-[10px] p-2 text-tokena-dark-gray dark:text-tokena-light-gray lg:hidden"
           aria-label="Close menu"
           @click="close"
         >

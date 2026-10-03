@@ -1,83 +1,79 @@
 <script setup lang="ts">
-const props = defineProps<{ coinId: string }>();
+const props = defineProps<{ coinId: string }>()
 
-defineEmits<{ close: [] }>();
+defineEmits<{ close: [] }>()
 
-const { detail, chart, isLoading, hasFailed } = useCoinDetail(props.coinId);
-const { isFavorite, toggle } = useFavorites();
+const { detail, chart, isLoading, hasFailed } = useCoinDetail(props.coinId)
+const { isFavorite, toggle } = useFavorites()
 
-const colorMode = useColorMode();
+const colorMode = useColorMode()
 
 const description = computed(() => {
-  const raw = detail.value?.description.en;
-  return raw ? toPlainText(raw) : "";
-});
+  const raw = detail.value?.description.en
+  return raw ? toPlainText(raw) : ''
+})
 
 /** Label and value pairs of the design's stats list. */
 const stats = computed(() => {
-  const market = detail.value?.market_data;
-  if (!market) return [];
+  const market = detail.value?.market_data
+  if (!market) return []
 
   return [
-    { label: "Market cap", value: formatUsd(market.market_cap.usd ?? 0) },
+    { label: 'Market cap', value: formatUsd(market.market_cap.usd ?? 0) },
     {
-      label: "Circulating supply",
+      label: 'Circulating supply',
       value: formatAmount(market.circulating_supply ?? 0),
     },
-    { label: "24 Hour High", value: formatPrice(market.high_24h.usd ?? 0) },
-    { label: "24 Hour Low", value: formatPrice(market.low_24h.usd ?? 0) },
-  ];
-});
+    { label: '24 Hour High', value: formatPrice(market.high_24h.usd ?? 0) },
+    { label: '24 Hour Low', value: formatPrice(market.low_24h.usd ?? 0) },
+  ]
+})
 
-const chartSeries = computed(() => [
-  { name: "Price", data: chart.value?.prices ?? [] },
-]);
+const chartSeries = computed(() => [{ name: 'Price', data: chart.value?.prices ?? [] }])
 
 const chartOptions = computed(() => {
-  const isDark = colorMode.value === "dark";
+  const isDark = colorMode.value === 'dark'
 
   return {
     chart: {
-      type: "line" as const,
+      type: 'line' as const,
       toolbar: { show: false },
       zoom: { enabled: false },
-      fontFamily: "Mona Sans, sans-serif",
-      background: "transparent",
+      fontFamily: 'Mona Sans, sans-serif',
+      background: 'transparent',
     },
-    theme: { mode: isDark ? ("dark" as const) : ("light" as const) },
-    colors: ["#00C234"],
-    stroke: { curve: "smooth" as const, width: 2 },
-    grid: { borderColor: isDark ? "#292C3B" : "#F3F4F6" },
+    theme: { mode: isDark ? ('dark' as const) : ('light' as const) },
+    colors: ['#00C234'],
+    stroke: { curve: 'smooth' as const, width: 2 },
+    grid: { borderColor: isDark ? '#292C3B' : '#F3F4F6' },
     dataLabels: { enabled: false },
     legend: {
       show: true,
-      position: "bottom" as const,
-      horizontalAlign: "left" as const,
+      position: 'bottom' as const,
+      horizontalAlign: 'left' as const,
     },
     xaxis: {
-      type: "datetime" as const,
-      labels: { style: { colors: "#6B7280", fontSize: "10px" } },
+      type: 'datetime' as const,
+      labels: { style: { colors: '#6B7280', fontSize: '10px' } },
       axisBorder: { show: false },
       axisTicks: { show: false },
     },
     yaxis: {
       labels: {
-        style: { colors: "#6B7280", fontSize: "10px" },
+        style: { colors: '#6B7280', fontSize: '10px' },
         formatter: (value: number) => formatUsd(value),
       },
     },
-    tooltip: { x: { format: "dd MMM yyyy" } },
-  };
-});
+    tooltip: { x: { format: 'dd MMM yyyy' } },
+  }
+})
 </script>
 
 <template>
   <div>
     <div class="flex items-center justify-between gap-4">
-      <h2
-        class="truncate text-base font-bold text-tokena-dark dark:text-tokena-light-gray"
-      >
-        {{ detail?.name ?? "Loading…" }}
+      <h2 class="truncate text-base font-bold text-tokena-dark dark:text-tokena-light-gray">
+        {{ detail?.name ?? 'Loading…' }}
       </h2>
       <button
         type="button"
@@ -100,12 +96,7 @@ const chartOptions = computed(() => {
 
     <div v-else class="mt-6 space-y-6">
       <ClientOnly>
-        <apexchart
-          type="line"
-          height="186"
-          :options="chartOptions"
-          :series="chartSeries"
-        />
+        <apexchart type="line" height="186" :options="chartOptions" :series="chartSeries" />
         <template #fallback>
           <UiSkeleton class="h-[186px] w-full" />
         </template>
@@ -120,30 +111,22 @@ const chartOptions = computed(() => {
             height="32"
             class="size-8 shrink-0 rounded-full"
           />
-          <p
-            class="truncate text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray"
-          >
+          <p class="truncate text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray">
             {{ detail.name }} (<span class="uppercase">{{ detail.symbol }}</span
             >/USD)
           </p>
         </div>
-        <p
-          class="shrink-0 text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray"
-        >
+        <p class="shrink-0 text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray">
           {{ formatPrice(detail.market_data.current_price.usd ?? 0) }}
         </p>
       </div>
 
       <div class="space-y-1.5">
         <div class="flex items-center justify-between gap-4">
-          <p
-            class="text-sm font-medium text-tokena-dark dark:text-tokena-light-gray"
-          >
+          <p class="text-sm font-medium text-tokena-dark dark:text-tokena-light-gray">
             Crypto Market Rank
           </p>
-          <UiBadge v-if="detail.market_cap_rank"
-            >Rank #{{ detail.market_cap_rank }}</UiBadge
-          >
+          <UiBadge v-if="detail.market_cap_rank">Rank #{{ detail.market_cap_rank }}</UiBadge>
           <span v-else class="text-sm text-tokena-dark-gray">Unranked</span>
         </div>
         <div
@@ -161,11 +144,7 @@ const chartOptions = computed(() => {
       </div>
 
       <div v-if="description" class="space-y-2">
-        <p
-          class="text-sm font-medium text-tokena-dark dark:text-tokena-light-gray"
-        >
-          Description
-        </p>
+        <p class="text-sm font-medium text-tokena-dark dark:text-tokena-light-gray">Description</p>
         <p
           class="max-h-40 overflow-y-auto text-xs leading-4 text-tokena-dark-gray dark:text-tokena-gray"
         >
@@ -173,16 +152,8 @@ const chartOptions = computed(() => {
         </p>
       </div>
 
-      <UiButton
-        variant="ghost"
-        size="md"
-        icon="star"
-        class="w-full"
-        @click="toggle(detail.id)"
-      >
-        {{
-          isFavorite(detail.id) ? "Remove from favorites" : "Add to favorites"
-        }}
+      <UiButton variant="ghost" size="md" icon="star" class="w-full" @click="toggle(detail.id)">
+        {{ isFavorite(detail.id) ? 'Remove from favorites' : 'Add to favorites' }}
       </UiButton>
     </div>
   </div>
