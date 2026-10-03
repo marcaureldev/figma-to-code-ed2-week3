@@ -1,7 +1,5 @@
 import type { MarketCoin } from '~/types/coin'
 
-const COINGECKO_MARKETS = 'https://api.coingecko.com/api/v3/coins/markets'
-
 /** CoinGecko's maximum page size, and more rows than the table ever paginates. */
 const PER_PAGE = 100
 
@@ -17,9 +15,10 @@ const PER_PAGE = 100
  * no category field to filter on.
  */
 export const useMarkets = (options: { category?: Ref<string> } = {}) => {
+  const { coingeckoApiBase } = useRuntimeConfig().public
   const category = options.category ?? ref('')
 
-  const { data, error, status, refresh } = useFetch<MarketCoin[]>(COINGECKO_MARKETS, {
+  const { data, error, status, refresh } = useFetch<MarketCoin[]>(`${coingeckoApiBase}/coins/markets`, {
     query: {
       vs_currency: 'usd',
       per_page: PER_PAGE,

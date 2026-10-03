@@ -5,8 +5,6 @@ import type {
   UpstreamNewsResponse,
 } from '~/types/news'
 
-const UPSTREAM = 'https://cryptocurrency.cv/api/v1/news'
-
 /**
  * cryptocurrency.cv aggregates 358 feeds, most of which are not newsrooms:
  * central-bank speeches, a general finance wire, protocol marketing blogs and
@@ -59,11 +57,31 @@ const MAX_EXCERPT = 180
 const MIN_ARTICLES = 8
 
 /**
- * Ceiling on upstream requests per call, so one page view cannot fan out.
- * Filtering yields roughly four articles per upstream page, so filling the
- * grid normally costs two.
+ * Ceiling on upstream requests per miss. Filtering keeps roughly a fifth of
+ * each upstream page, so filling the grid takes two to four of them. Caching
+ * is what keeps the provider happy, not a small fan-out: this budget is spent
+ * at most once per cache window, not once per visitor.
  */
 const MAX_UPSTREAM_FETCHES = 4
+
+/**
+ * How long a page of the feed is served before it is refreshed.
+ *
+ * The provider advertises generous limits but enforces them hard: a burst
+ * earns 403 REPEAT_RATE_LIMIT_ABUSE and an hour-long lockout. Every server
+ * render would otherwise hit it afresh, so responses are cached and shared.
+ * Headlines do not move fast enough for a short window to be worth the risk.
+ */
+const CACHE_SECONDS = 60 * 15
+
+/**
+ * How long a cached page may still be served after it goes stale.
+ *
+ * This is what stops a lockout from blanking the page: the refresh happens in
+ * the background, and if the provider refuses, readers keep the last good feed
+ * instead of an error.
+ */
+const STALE_SECONDS = 60 * 60
 
 const HTML_ENTITIES: Record<string, string> = {
   '&amp;': '&',
@@ -87,7 +105,14 @@ const toPlainText = (value: string): string =>
     .trim()
 
 const truncate = (value: string, max: number): string =>
-  value.length <= max ? value : `${value.slice(0, max).trimEnd()}…`
+  value.length <= max ? value : `${value.slice(0, max).trimEnd()}...`
+
+/**
+ * Many feeds append a syndication footer — "The post <title> appeared first
+ * on <publication>." — which is boilerplate, not part of the story.
+ */
+const stripSyndicationFooter = (value: string): string =>
+  value.replace(/\s*The post\b[\s\S]*$/i, '').trim()
 
 /** Keep only genuine, on-topic articles that have enough to render a card. */
 const isPublishable = (article: UpstreamArticle): boolean =>
@@ -97,7 +122,9 @@ const isPublishable = (article: UpstreamArticle): boolean =>
   && Boolean(article.link?.trim())
 
 const normalise = (article: UpstreamArticle): NewsArticle => {
-  const excerpt = article.description ? toPlainText(article.description) : ''
+  const excerpt = article.description
+    ? stripSyndicationFooter(toPlainText(article.description))
+    : ''
 
   return {
     // Upstream exposes no id; the article URL is its natural key.
@@ -114,12 +141,24 @@ const normalise = (article: UpstreamArticle): NewsArticle => {
   }
 }
 
-const fetchUpstreamPage = async (page: number): Promise<UpstreamNewsResponse> =>
-  $fetch<UpstreamNewsResponse>(UPSTREAM, {
+const fetchUpstreamPage = async (
+  baseUrl: string,
+  timeoutMs: number,
+  page: number,
+): Promise<UpstreamNewsResponse> =>
+  $fetch<UpstreamNewsResponse>(`${baseUrl}/news`, {
     query: { page },
     headers: { 'User-Agent': 'Tokena/1.0 (+https://github.com/marcaureldev)' },
-    timeout: 10_000,
+    timeout: timeoutMs,
   })
+
+/** The provider answers 403 once it has throttled a caller, 429 while doing so. */
+const isRateLimited = (cause: unknown): boolean => {
+  const status = (cause as { statusCode?: number, status?: number })?.statusCode
+    ?? (cause as { status?: number })?.status
+
+  return status === 403 || status === 429
+}
 
 /**
  * Serves the News page.
@@ -131,9 +170,12 @@ const fetchUpstreamPage = async (page: number): Promise<UpstreamNewsResponse> =>
  * Filtering can leave an upstream page nearly empty, so this walks forward
  * until it has enough articles to fill the grid, and reports where to resume.
  */
-export default defineEventHandler(async (event): Promise<NewsResponse> => {
-  const { page } = getQuery(event)
-  const startPage = Math.max(1, Number(page) || 1)
+export default defineCachedEventHandler(async (event): Promise<NewsResponse> => {
+  const config = useRuntimeConfig(event)
+  const baseUrl = config.newsApiBase
+  const timeoutMs = Number(config.newsRequestTimeoutMs) || 10_000
+
+  const startPage = Math.max(1, Number(getQuery(event).page) || 1)
 
   const collected: NewsArticle[] = []
   const seen = new Set<string>()
@@ -146,15 +188,17 @@ export default defineEventHandler(async (event): Promise<NewsResponse> => {
     let payload: UpstreamNewsResponse
 
     try {
-      payload = await fetchUpstreamPage(currentPage)
+      payload = await fetchUpstreamPage(baseUrl, timeoutMs, currentPage)
     }
     catch (cause) {
       // A later page failing still leaves us with something worth showing.
       if (collected.length > 0) break
 
       throw createError({
-        statusCode: 502,
-        statusMessage: 'Could not reach the news provider',
+        statusCode: isRateLimited(cause) ? 429 : 502,
+        statusMessage: isRateLimited(cause)
+          ? 'The news provider is rate limiting us'
+          : 'Could not reach the news provider',
         cause,
       })
     }
@@ -179,4 +223,10 @@ export default defineEventHandler(async (event): Promise<NewsResponse> => {
     nextPage: feedHasMore ? currentPage : null,
     fetchedAt: fetchedAt ?? new Date().toISOString(),
   }
+}, {
+  name: 'news',
+  swr: true,
+  maxAge: CACHE_SECONDS,
+  staleMaxAge: STALE_SECONDS,
+  getKey: event => `page-${Math.max(1, Number(getQuery(event).page) || 1)}`,
 })

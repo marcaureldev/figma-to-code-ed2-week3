@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { NuxtLink } from '#components'
 import type { IconName } from '~/components/ui/icons'
 
 const props = defineProps<{
@@ -17,7 +18,7 @@ const isActive = computed(() => props.to !== undefined && route.path === props.t
 
 <template>
   <component
-    :is="to ? resolveComponent('NuxtLink') : 'span'"
+    :is="to ? NuxtLink : 'span'"
     :to="to"
     class="flex w-full items-center gap-1 rounded-[10px] border px-2 py-3 transition-colors"
     :class="isActive

@@ -19,10 +19,18 @@ const { coins, isLoading, hasFailed } = useTrending()
       <DashboardTrendingCard v-for="coin in coins" :key="coin.item.id" :coin="coin" />
     </div>
 
-    <UiCard v-else class="p-6 text-center text-sm text-tokena-dark-gray dark:text-tokena-gray">
-      <template v-if="isLoading">Loading trending coins…</template>
-      <template v-else-if="hasFailed">Trending coins are unavailable right now.</template>
-      <template v-else>No trending coins to show.</template>
+    <div v-else-if="isLoading" class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <DashboardTrendingCardSkeleton v-for="index in 4" :key="index" />
+    </div>
+
+    <UiCard v-else>
+      <UiEmptyState
+        icon="trade-up"
+        :title="hasFailed ? 'Trending is unavailable' : 'Nothing trending'"
+        :description="hasFailed
+          ? 'CoinGecko did not answer this one. It usually recovers within a minute.'
+          : 'No coin is trending right now.'"
+      />
     </UiCard>
   </section>
 </template>
