@@ -4,10 +4,17 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxt/eslint'],
 
   tailwindcss: {
     cssPath: '~/assets/css/main.css',
+  },
+
+  eslint: {
+    config: {
+      // Prettier owns formatting, so ESLint only reports real defects.
+      stylistic: false,
+    },
   },
 
   colorMode: {

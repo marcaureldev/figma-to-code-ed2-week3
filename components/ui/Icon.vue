@@ -16,7 +16,11 @@ const icon = computed(() => icons[props.name])
   <!--
     The glyph paints with `currentColor`, so colour comes from the parent's
     text colour and the active, hover and dark-theme states need no extra art.
+
+    `icon.body` is build-time SVG from components/ui/icons.ts, reached through
+    the `IconName` union, so no caller-supplied string can land in v-html.
   -->
+  <!-- eslint-disable vue/no-v-html -->
   <svg
     :viewBox="icon.viewBox"
     :width="size"
@@ -27,4 +31,5 @@ const icon = computed(() => icons[props.name])
     class="shrink-0"
     v-html="icon.body"
   ></svg>
+  <!-- eslint-enable vue/no-v-html -->
 </template>
