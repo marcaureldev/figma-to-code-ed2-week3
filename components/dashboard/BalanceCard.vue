@@ -10,7 +10,11 @@ const CHANGE_PERCENT = 2.3
 <template>
   <UiCard class="flex w-full flex-col gap-2 p-3 xl:max-w-[316px]">
     <div class="flex flex-col gap-1.5">
-      <p class="text-lg font-semibold text-tokena-dark dark:text-tokena-light-gray">Balance</p>
+      <p
+        class="text-lg font-semibold text-tokena-dark dark:text-tokena-light-gray"
+      >
+        Balance
+      </p>
 
       <div class="flex flex-wrap items-center gap-1.5">
         <p class="text-lg font-bold text-tokena-dark dark:text-white">
@@ -18,7 +22,9 @@ const CHANGE_PERCENT = 2.3
         </p>
         <div class="flex items-center gap-1.5">
           <UiBadge tone="positive">{{ formatPercent(CHANGE_PERCENT) }}</UiBadge>
-          <p class="text-xs font-medium text-tokena-dark-gray dark:text-tokena-gray">
+          <p
+            class="text-xs font-medium text-tokena-dark-gray dark:text-tokena-gray"
+          >
             vs last month
           </p>
         </div>
@@ -26,8 +32,12 @@ const CHANGE_PERCENT = 2.3
     </div>
 
     <div class="flex items-center gap-1.5">
-      <UiButton variant="ghost" size="md" icon="arrow-up" class="flex-1">Deposit</UiButton>
-      <UiButton variant="ghost" size="md" icon="arrow-down" class="flex-1">Withdraw</UiButton>
+      <UiButton variant="ghost" size="md" icon="arrow-up" class="flex-1"
+        >Deposit</UiButton
+      >
+      <UiButton variant="ghost" size="md" icon="arrow-down" class="flex-1"
+        >Withdraw</UiButton
+      >
     </div>
   </UiCard>
 </template>

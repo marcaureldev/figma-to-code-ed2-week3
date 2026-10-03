@@ -1,12 +1,5 @@
 import type { NewsArticle, NewsResponse } from '~/types/news'
 
-/**
- * Drives the News page.
- *
- * Articles accumulate across pages so "Load more" appends rather than
- * replaces. The list is shared `useState` so navigating away and back keeps
- * whatever the reader had already loaded.
- */
 export const useNews = () => {
   const articles = useState<NewsArticle[]>('news:articles', () => [])
   const nextPage = useState<number | null>('news:next-page', () => null)
@@ -15,7 +8,9 @@ export const useNews = () => {
   const loadMoreError = ref<string | null>(null)
 
   const { error, status, refresh } = useAsyncData('news:feed', async () => {
-    const response = await $fetch<NewsResponse>('/api/news', { query: { page: 1 } })
+    const response = await $fetch<NewsResponse>('/api/news', {
+      query: { page: 1 },
+    })
 
     articles.value = response.articles
     nextPage.value = response.nextPage
@@ -36,10 +31,10 @@ export const useNews = () => {
         query: { page: nextPage.value },
       })
 
-      // The feed shifts as stories are published, so the same article can
-      // surface again on a later page.
       const alreadyShown = new Set(articles.value.map((article) => article.id))
-      const fresh = response.articles.filter((article) => !alreadyShown.has(article.id))
+      const fresh = response.articles.filter(
+        (article) => !alreadyShown.has(article.id),
+      )
 
       articles.value = [...articles.value, ...fresh]
       nextPage.value = response.nextPage

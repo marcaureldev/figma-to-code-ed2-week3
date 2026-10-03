@@ -9,7 +9,9 @@ const { toggle } = useSidebar()
  * oversight rather than intent, so the heading follows the current route.
  */
 const heading = computed(
-  () => navigationItems.find((item) => item.to === route.path)?.label ?? 'Dashboard',
+  () =>
+    navigationItems.find((item) => item.to === route.path)?.label ??
+    'Dashboard',
 )
 </script>
 
@@ -28,15 +30,21 @@ const heading = computed(
       </button>
 
       <div class="min-w-0">
-        <p class="truncate text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray">
+        <p
+          class="truncate text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray"
+        >
           {{ heading }}
         </p>
-        <p class="truncate text-xs font-medium text-tokena-dark-gray dark:text-tokena-gray">
+        <p
+          class="truncate text-xs font-medium text-tokena-dark-gray dark:text-tokena-gray"
+        >
           Welcome back, John Doe !
         </p>
       </div>
 
-      <UiButton icon="add-wallet" class="hidden md:inline-flex">Connect wallet</UiButton>
+      <UiButton icon="add-wallet" class="hidden md:inline-flex"
+        >Connect wallet</UiButton
+      >
     </div>
 
     <div class="flex shrink-0 items-center gap-3">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useHead({ title: 'Dashboard — Tokena' })
+useHead({ title: 'Dashboard - Tokena' })
 </script>
 
 <template>

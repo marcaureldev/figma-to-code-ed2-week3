@@ -29,7 +29,9 @@ const stats = computed(() => {
   ]
 })
 
-const chartSeries = computed(() => [{ name: 'Price', data: chart.value?.prices ?? [] }])
+const chartSeries = computed(() => [
+  { name: 'Price', data: chart.value?.prices ?? [] },
+])
 
 const chartOptions = computed(() => {
   const isDark = colorMode.value === 'dark'
@@ -72,7 +74,9 @@ const chartOptions = computed(() => {
 <template>
   <div>
     <div class="flex items-center justify-between gap-4">
-      <h2 class="truncate text-base font-bold text-tokena-dark dark:text-tokena-light-gray">
+      <h2
+        class="truncate text-base font-bold text-tokena-dark dark:text-tokena-light-gray"
+      >
         {{ detail?.name ?? 'Loading…' }}
       </h2>
       <button
@@ -96,7 +100,12 @@ const chartOptions = computed(() => {
 
     <div v-else class="mt-6 space-y-6">
       <ClientOnly>
-        <apexchart type="line" height="186" :options="chartOptions" :series="chartSeries" />
+        <apexchart
+          type="line"
+          height="186"
+          :options="chartOptions"
+          :series="chartSeries"
+        />
         <template #fallback>
           <UiSkeleton class="h-[186px] w-full" />
         </template>
@@ -111,22 +120,30 @@ const chartOptions = computed(() => {
             height="32"
             class="size-8 shrink-0 rounded-full"
           />
-          <p class="truncate text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray">
+          <p
+            class="truncate text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray"
+          >
             {{ detail.name }} (<span class="uppercase">{{ detail.symbol }}</span
             >/USD)
           </p>
         </div>
-        <p class="shrink-0 text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray">
+        <p
+          class="shrink-0 text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray"
+        >
           {{ formatPrice(detail.market_data.current_price.usd ?? 0) }}
         </p>
       </div>
 
       <div class="space-y-1.5">
         <div class="flex items-center justify-between gap-4">
-          <p class="text-sm font-medium text-tokena-dark dark:text-tokena-light-gray">
+          <p
+            class="text-sm font-medium text-tokena-dark dark:text-tokena-light-gray"
+          >
             Crypto Market Rank
           </p>
-          <UiBadge v-if="detail.market_cap_rank">Rank #{{ detail.market_cap_rank }}</UiBadge>
+          <UiBadge v-if="detail.market_cap_rank"
+            >Rank #{{ detail.market_cap_rank }}</UiBadge
+          >
           <span v-else class="text-sm text-tokena-dark-gray">Unranked</span>
         </div>
         <div
@@ -144,7 +161,11 @@ const chartOptions = computed(() => {
       </div>
 
       <div v-if="description" class="space-y-2">
-        <p class="text-sm font-medium text-tokena-dark dark:text-tokena-light-gray">Description</p>
+        <p
+          class="text-sm font-medium text-tokena-dark dark:text-tokena-light-gray"
+        >
+          Description
+        </p>
         <p
           class="max-h-40 overflow-y-auto text-xs leading-4 text-tokena-dark-gray dark:text-tokena-gray"
         >
@@ -152,8 +173,16 @@ const chartOptions = computed(() => {
         </p>
       </div>
 
-      <UiButton variant="ghost" size="md" icon="star" class="w-full" @click="toggle(detail.id)">
-        {{ isFavorite(detail.id) ? 'Remove from favorites' : 'Add to favorites' }}
+      <UiButton
+        variant="ghost"
+        size="md"
+        icon="star"
+        class="w-full"
+        @click="toggle(detail.id)"
+      >
+        {{
+          isFavorite(detail.id) ? 'Remove from favorites' : 'Add to favorites'
+        }}
       </UiButton>
     </div>
   </div>

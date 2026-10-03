@@ -1,4 +1,9 @@
-import type { NewsArticle, NewsResponse, UpstreamArticle, UpstreamNewsResponse } from '~/types/news'
+import type {
+  NewsArticle,
+  NewsResponse,
+  UpstreamArticle,
+  UpstreamNewsResponse,
+} from '~/types/news'
 
 /**
  * cryptocurrency.cv aggregates 358 feeds, most of which are not newsrooms:
@@ -94,7 +99,10 @@ const HTML_ENTITIES: Record<string, string> = {
  */
 const toPlainText = (value: string): string =>
   value
-    .replace(/&[a-z]+;|&#\d+;/gi, (entity) => HTML_ENTITIES[entity.toLowerCase()] ?? ' ')
+    .replace(
+      /&[a-z]+;|&#\d+;/gi,
+      (entity) => HTML_ENTITIES[entity.toLowerCase()] ?? ' ',
+    )
     .replace(/<[^>]*>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()

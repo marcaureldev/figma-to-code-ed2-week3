@@ -27,7 +27,8 @@ export const useFavorites = () => {
     }
   }
 
-  const isFavorite = (coinId: string): boolean => favorites.value.includes(coinId)
+  const isFavorite = (coinId: string): boolean =>
+    favorites.value.includes(coinId)
 
   const toggle = (coinId: string): void => {
     favorites.value = isFavorite(coinId)

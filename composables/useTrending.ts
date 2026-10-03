@@ -20,7 +20,9 @@ export const useTrending = () => {
     },
   )
 
-  const coins = computed<TrendingCoin[]>(() => data.value?.coins?.slice(0, TRENDING_LIMIT) ?? [])
+  const coins = computed<TrendingCoin[]>(
+    () => data.value?.coins?.slice(0, TRENDING_LIMIT) ?? [],
+  )
 
   const isLoading = computed(() => status.value === 'pending')
   const hasFailed = computed(() => status.value === 'error')

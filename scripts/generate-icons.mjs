@@ -23,7 +23,11 @@ const NOT_AN_ICON = new Set([
 ])
 
 /** Colour variants that `currentColor` makes redundant. */
-const REDUNDANT_VARIANTS = new Set(['home-white-icon.svg', 'news-white-icon.svg', 'home-icon.svg'])
+const REDUNDANT_VARIANTS = new Set([
+  'home-white-icon.svg',
+  'news-white-icon.svg',
+  'home-icon.svg',
+])
 
 const toName = (file) => file.replace(/\.svg$/, '').replace(/-icons?$/, '')
 
@@ -46,7 +50,10 @@ const definitions = readdirSync(ICONS_DIR)
     const defs = body.match(/<defs>[\s\S]*?<\/defs>/)?.[0]
     if (defs) body = body.replace(defs, '\0')
 
-    body = body.replace(/(stroke|fill)="(#[0-9A-Fa-f]{3,8}|white|black)"/g, '$1="currentColor"')
+    body = body.replace(
+      /(stroke|fill)="(#[0-9A-Fa-f]{3,8}|white|black)"/g,
+      '$1="currentColor"',
+    )
 
     if (defs) body = body.replace('\0', defs)
 

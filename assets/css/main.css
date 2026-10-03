@@ -44,13 +44,23 @@
     content: '';
     @apply absolute inset-0;
     transform: translateX(-100%);
-    background-image: linear-gradient(90deg, transparent, theme('colors.white / 70%'), transparent);
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      theme('colors.white / 70%'),
+      transparent
+    );
     animation: tokena-shimmer 1.6s ease-in-out infinite;
   }
 
   /* On dark surfaces a white sweep would glare, so it barely lifts the tone. */
   :is(.dark) .skeleton::after {
-    background-image: linear-gradient(90deg, transparent, theme('colors.white / 7%'), transparent);
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      theme('colors.white / 7%'),
+      transparent
+    );
   }
 }
 

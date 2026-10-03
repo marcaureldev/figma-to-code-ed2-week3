@@ -8,11 +8,9 @@ type ButtonSize = 'sm' | 'md'
 const props = withDefaults(
   defineProps<{
     variant?: ButtonVariant
-    /** `sm` is the 36px control of the top bar, `md` the 40px one of the cards. */
     size?: ButtonSize
     icon?: IconName
     iconPosition?: 'left' | 'right'
-    /** Renders a NuxtLink instead of a button. */
     to?: string
     type?: 'button' | 'submit'
   }>(),
@@ -20,7 +18,8 @@ const props = withDefaults(
 )
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: 'border-tokena-blue bg-tokena-blue text-white hover:bg-tokena-dark-2',
+  primary:
+    'border-tokena-blue bg-tokena-blue text-white hover:bg-tokena-dark-2',
   outline:
     'border-tokena-gray bg-white text-tokena-dark hover:bg-tokena-light-gray ' +
     'dark:border-tokena-dark-gray dark:bg-tokena-dark-blue-1 dark:text-tokena-light-gray dark:hover:bg-tokena-dark-blue-2',
@@ -34,7 +33,9 @@ const SIZES: Record<ButtonSize, string> = {
   md: 'h-10',
 }
 
-const classes = computed(() => `${VARIANTS[props.variant]} ${SIZES[props.size]}`)
+const classes = computed(
+  () => `${VARIANTS[props.variant]} ${SIZES[props.size]}`,
+)
 </script>
 
 <template>
@@ -46,7 +47,7 @@ const classes = computed(() => `${VARIANTS[props.variant]} ${SIZES[props.size]}`
     :class="classes"
   >
     <UiIcon v-if="icon && iconPosition === 'left'" :name="icon" />
-    <span class="whitespace-nowrap"><slot /></span>
+    <span class="whitespace-nowrap"><slot></slot></span>
     <UiIcon v-if="icon && iconPosition === 'right'" :name="icon" />
   </component>
 </template>

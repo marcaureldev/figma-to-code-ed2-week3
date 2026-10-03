@@ -4,7 +4,6 @@ import { icons, type IconName } from './icons'
 const props = withDefaults(
   defineProps<{
     name: IconName
-    /** Edge length in pixels. The design draws most glyphs at 18. */
     size?: number | string
   }>(),
   { size: 18 },
@@ -27,5 +26,5 @@ const icon = computed(() => icons[props.name])
     focusable="false"
     class="shrink-0"
     v-html="icon.body"
-  />
+  ></svg>
 </template>

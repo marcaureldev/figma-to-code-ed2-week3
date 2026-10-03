@@ -11,7 +11,7 @@ const { isOpen, close } = useSidebar()
     class="fixed inset-0 z-30 bg-tokena-dark/40 lg:hidden"
     aria-hidden="true"
     @click="close"
-  />
+  ></div>
 
   <aside
     class="fixed inset-y-0 left-0 z-40 flex w-60 flex-col justify-between overflow-y-auto border-r border-tokena-gray bg-white px-3.5 py-4 transition-transform duration-300 dark:border-tokena-gray/15 dark:bg-tokena-dark-blue-1 lg:translate-x-0"
@@ -31,7 +31,11 @@ const { isOpen, close } = useSidebar()
       </div>
 
       <nav class="flex w-full flex-col gap-5">
-        <p class="text-sm font-medium text-tokena-dark-gray dark:text-tokena-light-gray">Menu</p>
+        <p
+          class="text-sm font-medium text-tokena-dark-gray dark:text-tokena-light-gray"
+        >
+          Menu
+        </p>
         <ul class="flex w-full flex-col gap-0.5">
           <li v-for="item in navigationItems" :key="item.label">
             <LayoutSidebarLink

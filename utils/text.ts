@@ -18,6 +18,9 @@ const HTML_ENTITIES: Record<string, string> = {
 export const toPlainText = (value: string): string =>
   value
     .replace(/<[^>]*>/g, ' ')
-    .replace(/&[a-z]+;|&#\d+;/gi, (entity) => HTML_ENTITIES[entity.toLowerCase()] ?? ' ')
+    .replace(
+      /&[a-z]+;|&#\d+;/gi,
+      (entity) => HTML_ENTITIES[entity.toLowerCase()] ?? ' ',
+    )
     .replace(/\s+/g, ' ')
     .trim()

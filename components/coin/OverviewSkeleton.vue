@@ -15,8 +15,16 @@
     </div>
 
     <div class="space-y-2.5">
-      <div v-for="index in 5" :key="index" class="flex items-center justify-between gap-4">
-        <UiSkeleton variant="text" class="h-4" :class="index === 1 ? 'w-40' : 'w-32'" />
+      <div
+        v-for="index in 5"
+        :key="index"
+        class="flex items-center justify-between gap-4"
+      >
+        <UiSkeleton
+          variant="text"
+          class="h-4"
+          :class="index === 1 ? 'w-40' : 'w-32'"
+        />
         <UiSkeleton
           variant="text"
           class="h-4"

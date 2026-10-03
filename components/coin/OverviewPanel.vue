@@ -45,7 +45,11 @@ onBeforeUnmount(() => {
           class="my-auto w-full max-w-[496px] rounded-2xl bg-white p-5 outline-none dark:bg-tokena-dark-blue-1"
         >
           <!-- Keyed so switching coins remounts and refetches cleanly. -->
-          <OverviewContent :key="selectedCoinId" :coin-id="selectedCoinId" @close="close" />
+          <OverviewContent
+            :key="selectedCoinId"
+            :coin-id="selectedCoinId"
+            @close="close"
+          />
         </div>
       </div>
     </Transition>
