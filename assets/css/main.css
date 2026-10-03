@@ -29,3 +29,49 @@
     @apply dark:bg-tokena-dark-blue-1 dark:text-tokena-white;
   }
 }
+
+@layer components {
+  /*
+   * Loading placeholder: a light sweep crossing a flat surface, rather than a
+   * block fading in and out. The sweep reads as progress; a pulse reads as a
+   * broken element.
+   */
+  .skeleton {
+    @apply relative overflow-hidden bg-tokena-light-gray dark:bg-tokena-dark-blue-2;
+  }
+
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      theme('colors.white / 70%'),
+      transparent
+    );
+    animation: tokena-shimmer 1.6s ease-in-out infinite;
+  }
+
+  /* On dark surfaces a white sweep would glare, so it barely lifts the tone. */
+  :is(.dark) .skeleton::after {
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      theme('colors.white / 7%'),
+      transparent
+    );
+  }
+}
+
+@keyframes tokena-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    animation: none;
+  }
+}

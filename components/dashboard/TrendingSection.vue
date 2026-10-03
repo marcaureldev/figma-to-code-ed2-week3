@@ -20,7 +20,7 @@ const { coins, isLoading, hasFailed } = useTrending()
     </div>
 
     <div v-else-if="isLoading" class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      <UiSkeleton v-for="index in 4" :key="index" class="h-[94px] w-full rounded-xl" />
+      <DashboardTrendingCardSkeleton v-for="index in 4" :key="index" />
     </div>
 
     <UiCard v-else>

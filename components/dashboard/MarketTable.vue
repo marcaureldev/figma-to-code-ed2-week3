@@ -10,6 +10,9 @@ defineProps<{
 const { isFavorite, toggle } = useFavorites()
 const { open } = useCoinOverview()
 
+/** Rows drawn while the market loads; matches the page size of the table. */
+const SKELETON_ROWS = 10
+
 const sparklineOptions = (priceChange: number) => ({
   chart: {
     type: 'line' as const,
@@ -42,7 +45,8 @@ const sparklineSeries = (prices: number[]) => [{ name: 'Price', data: prices }]
     </div>
 
     <div class="w-full overflow-x-auto">
-      <table v-if="coins.length" class="w-full border-collapse">
+      <!-- The header stays put while rows load, so the columns do not jump. -->
+      <table v-if="isLoading || coins.length" class="w-full border-collapse">
         <thead class="bg-tokena-light-gray text-tokena-dark dark:bg-tokena-dark-blue-2 dark:text-tokena-light-gray">
           <tr class="whitespace-nowrap text-left text-sm font-medium">
             <th class="w-12 px-4 py-3"><span class="sr-only">Favourite</span></th>
@@ -55,7 +59,30 @@ const sparklineSeries = (prices: number[]) => [{ name: 'Price', data: prices }]
             <th class="px-4 py-3 font-medium">Last 7 Days</th>
           </tr>
         </thead>
-        <tbody class="text-sm">
+
+        <tbody v-if="isLoading">
+          <tr
+            v-for="row in SKELETON_ROWS"
+            :key="row"
+            class="border-b border-tokena-light-gray last:border-0 dark:border-tokena-gray/10"
+          >
+            <td class="px-4 py-3"><UiSkeleton variant="circle" class="size-5" /></td>
+            <td class="px-4 py-3"><UiSkeleton variant="text" class="w-4" /></td>
+            <td class="px-4 py-3">
+              <div class="flex items-center gap-2">
+                <UiSkeleton variant="circle" class="size-6 shrink-0" />
+                <UiSkeleton variant="text" class="w-28" />
+              </div>
+            </td>
+            <td class="px-4 py-3"><UiSkeleton variant="text" class="w-20" /></td>
+            <td class="px-4 py-3"><UiSkeleton class="h-5 w-14 rounded-full" /></td>
+            <td class="px-4 py-3"><UiSkeleton variant="text" class="w-28" /></td>
+            <td class="px-4 py-3"><UiSkeleton variant="text" class="w-32" /></td>
+            <td class="px-4 py-3"><UiSkeleton class="h-8 w-[150px]" /></td>
+          </tr>
+        </tbody>
+
+        <tbody v-else class="text-sm">
           <tr
             v-for="coin in coins"
             :key="coin.id"
@@ -104,15 +131,14 @@ const sparklineSeries = (prices: number[]) => [{ name: 'Price', data: prices }]
                   :options="sparklineOptions(coin.price_change_percentage_24h)"
                   :series="sparklineSeries(coin.sparkline_in_7d.price)"
                 />
+                <template #fallback>
+                  <UiSkeleton class="h-8 w-[150px]" />
+                </template>
               </ClientOnly>
             </td>
           </tr>
         </tbody>
       </table>
-
-      <div v-else-if="isLoading" class="space-y-3 p-4">
-        <UiSkeleton v-for="index in 6" :key="index" class="h-10 w-full" />
-      </div>
 
       <UiEmptyState
         v-else-if="hasFailed"

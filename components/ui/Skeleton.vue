@@ -1,7 +1,19 @@
 <script setup lang="ts">
-// A neutral pulsing block standing in for content that is still loading.
+withDefaults(
+  defineProps<{
+    /** `text` sizes itself like a line of copy; `circle` stays round. */
+    variant?: 'block' | 'text' | 'circle'
+  }>(),
+  { variant: 'block' },
+)
+
+const SHAPES = {
+  block: 'rounded-[10px]',
+  text: 'h-3 rounded-full',
+  circle: 'rounded-full',
+} as const
 </script>
 
 <template>
-  <div class="animate-pulse rounded-[10px] bg-tokena-light-gray dark:bg-tokena-dark-blue-2" />
+  <div class="skeleton" :class="SHAPES[variant]" aria-hidden="true" />
 </template>

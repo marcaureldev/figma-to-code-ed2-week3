@@ -89,13 +89,7 @@ const chartOptions = computed(() => {
       </button>
     </div>
 
-    <div v-if="isLoading" class="mt-6 space-y-6">
-      <UiSkeleton class="h-[186px] w-full" />
-      <div class="space-y-2">
-        <UiSkeleton v-for="index in 5" :key="index" class="h-5 w-full" />
-      </div>
-      <UiSkeleton class="h-20 w-full" />
-    </div>
+    <CoinOverviewSkeleton v-if="isLoading" />
 
     <UiEmptyState
       v-else-if="hasFailed || !detail"
