@@ -5,12 +5,6 @@ const trigger = ref<HTMLElement | null>(null)
 const isVisible = ref(false)
 const position = ref({ top: 0, left: 0 })
 
-/**
- * The tooltip is rendered at the end of <body> in fixed position rather than
- * next to its trigger. Inside the market table the trigger sits in a scroll
- * container, which clips anything drawn outside its bounds; a teleported,
- * fixed element cannot be clipped by an ancestor.
- */
 const show = (): void => {
   const rect = trigger.value?.getBoundingClientRect()
   if (!rect) return
