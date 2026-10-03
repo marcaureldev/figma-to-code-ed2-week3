@@ -16,7 +16,9 @@ export default defineNuxtConfig({
   // which is what Tailwind's `darkMode: 'class'` strategy expects.
   colorMode: {
     classSuffix: '',
-    preference: 'light',
+    // Follow the operating system on a first visit; a manual choice is
+    // remembered from then on. `fallback` covers browsers that report nothing.
+    preference: 'system',
     fallback: 'light',
     storageKey: 'tokena-color-mode',
   },

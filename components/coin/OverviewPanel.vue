@@ -1,23 +1,25 @@
 <script setup lang="ts">
-const { selectedCoinId, isOpen, close } = useCoinOverview()
+import OverviewContent from "./OverviewContent.vue";
 
-const panel = ref<HTMLElement | null>(null)
+const { selectedCoinId, isOpen, close } = useCoinOverview();
+
+const panel = ref<HTMLElement | null>(null);
 
 const onKeydown = (event: KeyboardEvent): void => {
-  if (event.key === 'Escape') close()
-}
+  if (event.key === "Escape") close();
+};
 
 // Keep the page behind the panel from scrolling, and restore it on close.
 watch(isOpen, (open) => {
-  if (!import.meta.client) return
+  if (!import.meta.client) return;
 
-  document.body.style.overflow = open ? 'hidden' : ''
-  if (open) nextTick(() => panel.value?.focus())
-})
+  document.body.style.overflow = open ? "hidden" : "";
+  if (open) nextTick(() => panel.value?.focus());
+});
 
 onBeforeUnmount(() => {
-  if (import.meta.client) document.body.style.overflow = ''
-})
+  if (import.meta.client) document.body.style.overflow = "";
+});
 </script>
 
 <template>
@@ -43,7 +45,11 @@ onBeforeUnmount(() => {
           class="my-auto w-full max-w-[496px] rounded-2xl bg-white p-5 outline-none dark:bg-tokena-dark-blue-1"
         >
           <!-- Keyed so switching coins remounts and refetches cleanly. -->
-          <CoinOverviewContent :key="selectedCoinId" :coin-id="selectedCoinId" @close="close" />
+          <OverviewContent
+            :key="selectedCoinId"
+            :coin-id="selectedCoinId"
+            @close="close"
+          />
         </div>
       </div>
     </Transition>

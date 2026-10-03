@@ -18,8 +18,18 @@ const meta = computed(() => {
 const imageFailed = ref(false)
 const hasImage = computed(() => Boolean(props.article.imageUrl) && !imageFailed.value)
 
-/** Favicon of the publication, used as the source avatar the design shows. */
+/**
+ * Favicon of the publication, used as the source avatar the design shows.
+ *
+ * The feed carries no logo, so this leans on Google's favicon service. It is
+ * an undocumented endpoint, so a failure falls back to the initial rather than
+ * leaving a hole in the card.
+ */
+const iconFailed = ref(false)
+
 const sourceIcon = computed(() => {
+  if (iconFailed.value) return null
+
   try {
     const { hostname } = new URL(props.article.url)
     return `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`
@@ -28,6 +38,8 @@ const sourceIcon = computed(() => {
     return null
   }
 })
+
+const sourceInitial = computed(() => props.article.source.charAt(0).toUpperCase())
 </script>
 
 <template>
@@ -47,7 +59,13 @@ const sourceIcon = computed(() => {
           height="32"
           class="size-8 shrink-0 rounded-full bg-tokena-light-gray object-cover dark:bg-tokena-dark-blue-2"
           loading="lazy"
+          @error="iconFailed = true"
         >
+        <span
+          v-else
+          class="grid size-8 shrink-0 place-items-center rounded-full bg-tokena-light-gray text-xs font-semibold text-tokena-dark-gray dark:bg-tokena-dark-blue-2 dark:text-tokena-gray"
+          aria-hidden="true"
+        >{{ sourceInitial }}</span>
         <div class="min-w-0 flex-1 text-xs leading-4">
           <p class="truncate font-semibold text-tokena-dark dark:text-tokena-light-gray">{{ article.source }}</p>
           <p class="truncate font-normal text-tokena-dark-gray dark:text-tokena-gray">{{ meta }}</p>
