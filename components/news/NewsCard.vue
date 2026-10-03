@@ -3,10 +3,6 @@ import type { NewsArticle } from '~/types/news'
 
 const props = defineProps<{ article: NewsArticle }>()
 
-/**
- * The design prints "News - 7 hours ago". The feed gives a real topic, which
- * is more useful than a constant, so it takes that slot.
- */
 const meta = computed(() => {
   const { category, timeAgo } = props.article
   const topic = category.charAt(0).toUpperCase() + category.slice(1)
@@ -14,17 +10,11 @@ const meta = computed(() => {
   return `${topic} - ${timeAgo}`
 })
 
-/** Some artwork URLs 404 or block hotlinking, so fall back to the placeholder. */
 const imageFailed = ref(false)
-const hasImage = computed(() => Boolean(props.article.imageUrl) && !imageFailed.value)
+const hasImage = computed(
+  () => Boolean(props.article.imageUrl) && !imageFailed.value,
+)
 
-/**
- * Favicon of the publication, used as the source avatar the design shows.
- *
- * The feed carries no logo, so this leans on Google's favicon service. It is
- * an undocumented endpoint, so a failure falls back to the initial rather than
- * leaving a hole in the card.
- */
 const iconFailed = ref(false)
 
 const sourceIcon = computed(() => {
@@ -33,13 +23,14 @@ const sourceIcon = computed(() => {
   try {
     const { hostname } = new URL(props.article.url)
     return `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`
-  }
-  catch {
+  } catch {
     return null
   }
 })
 
-const sourceInitial = computed(() => props.article.source.charAt(0).toUpperCase())
+const sourceInitial = computed(() =>
+  props.article.source.charAt(0).toUpperCase(),
+)
 </script>
 
 <template>
@@ -60,19 +51,27 @@ const sourceInitial = computed(() => props.article.source.charAt(0).toUpperCase(
           class="size-8 shrink-0 rounded-full bg-tokena-light-gray object-cover dark:bg-tokena-dark-blue-2"
           loading="lazy"
           @error="iconFailed = true"
-        >
+        />
         <span
           v-else
           class="grid size-8 shrink-0 place-items-center rounded-full bg-tokena-light-gray text-xs font-semibold text-tokena-dark-gray dark:bg-tokena-dark-blue-2 dark:text-tokena-gray"
           aria-hidden="true"
-        >{{ sourceInitial }}</span>
+          >{{ sourceInitial }}</span
+        >
         <div class="min-w-0 flex-1 text-xs leading-4">
-          <p class="truncate font-semibold text-tokena-dark dark:text-tokena-light-gray">{{ article.source }}</p>
-          <p class="truncate font-normal text-tokena-dark-gray dark:text-tokena-gray">{{ meta }}</p>
+          <p
+            class="truncate font-semibold text-tokena-dark dark:text-tokena-light-gray"
+          >
+            {{ article.source }}
+          </p>
+          <p
+            class="truncate font-normal text-tokena-dark-gray dark:text-tokena-gray"
+          >
+            {{ meta }}
+          </p>
         </div>
       </div>
 
-      <!-- Upstream has no artwork for some articles; the design's grey block stands in. -->
       <img
         v-if="hasImage"
         :src="article.imageUrl!"
@@ -80,14 +79,22 @@ const sourceInitial = computed(() => props.article.source.charAt(0).toUpperCase(
         class="aspect-[319/194] w-full rounded-[10px] bg-tokena-light-gray object-cover dark:bg-tokena-dark-blue-2"
         loading="lazy"
         @error="imageFailed = true"
-      >
-      <div v-else class="aspect-[319/194] w-full rounded-[10px] bg-tokena-light-gray dark:bg-tokena-dark-blue-2" />
+      />
+      <div
+        v-else
+        class="aspect-[319/194] w-full rounded-[10px] bg-tokena-light-gray dark:bg-tokena-dark-blue-2"
+      ></div>
 
       <div class="flex flex-1 flex-col gap-1.5">
-        <h3 class="text-xs font-semibold italic leading-4 text-tokena-dark dark:text-tokena-light-gray">
+        <h3
+          class="text-xs font-semibold italic leading-4 text-tokena-dark dark:text-tokena-light-gray"
+        >
           {{ article.title }}
         </h3>
-        <p v-if="article.excerpt" class="text-xs font-medium leading-4 text-tokena-dark-gray dark:text-tokena-gray">
+        <p
+          v-if="article.excerpt"
+          class="text-xs font-medium leading-4 text-tokena-dark-gray dark:text-tokena-gray"
+        >
           {{ article.excerpt }}
         </p>
       </div>

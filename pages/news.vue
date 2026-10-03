@@ -1,33 +1,61 @@
 <script setup lang="ts">
-useHead({ title: 'News — Tokena' })
+useHead({ title: 'News - Tokena' })
 
-const { articles, hasMore, loadMore, isLoadingMore, loadMoreError, isLoading, error, refresh } = useNews()
+const {
+  articles,
+  hasMore,
+  loadMore,
+  isLoadingMore,
+  loadMoreError,
+  isLoading,
+  error,
+  refresh,
+} = useNews()
 
-/** 429 means the provider throttled us, which is worth saying plainly. */
-const isRateLimited = computed(() => error.value?.statusCode === 429)
+const isRateLimited = computed(() => error.value?.status === 429)
 
 const SKELETON_COUNT = 8
 </script>
 
 <template>
   <div class="space-y-5">
-    <h1 class="text-lg font-semibold text-tokena-dark dark:text-tokena-light-gray">Latest crypto news</h1>
+    <h1
+      class="text-lg font-semibold text-tokena-dark dark:text-tokena-light-gray"
+    >
+      Latest crypto news
+    </h1>
 
-    <div v-if="isLoading" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div
+      v-if="isLoading"
+      class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+    >
       <NewsCardSkeleton v-for="index in SKELETON_COUNT" :key="index" />
     </div>
 
-    <div v-else-if="articles.length" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      <NewsCard v-for="article in articles" :key="article.id" :article="article" />
+    <div
+      v-else-if="articles.length"
+      class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+    >
+      <NewsCard
+        v-for="article in articles"
+        :key="article.id"
+        :article="article"
+      />
     </div>
 
     <UiCard v-else-if="error">
       <UiEmptyState
         icon="news"
-        :title="isRateLimited ? 'The news provider is throttling us' : 'The news feed is unavailable'"
-        :description="isRateLimited
-          ? 'Too many requests went out in a short window. It usually clears within the hour.'
-          : 'We could not reach the provider. This is usually temporary.'"
+        :title="
+          isRateLimited
+            ? 'The news provider is throttling us'
+            : 'The news feed is unavailable'
+        "
+        :description="
+          isRateLimited
+            ? 'Too many requests went out in a short window. It usually clears within the hour.'
+            : 'We could not reach the provider. This is usually temporary.'
+        "
         action-label="Try again"
         @action="refresh"
       />
@@ -43,7 +71,9 @@ const SKELETON_COUNT = 8
       />
     </UiCard>
 
-    <p v-if="loadMoreError" class="text-center text-sm text-tokena-red">{{ loadMoreError }}</p>
+    <p v-if="loadMoreError" class="text-center text-sm text-tokena-red">
+      {{ loadMoreError }}
+    </p>
 
     <div v-if="hasMore" class="flex justify-center pt-1">
       <button

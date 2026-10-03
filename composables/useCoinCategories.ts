@@ -15,15 +15,24 @@ interface CoinCategory {
 export const useCoinCategories = () => {
   const { coingeckoApiBase } = useRuntimeConfig().public
 
-  const { data, status } = useFetch<CoinCategory[]>(`${coingeckoApiBase}/coins/categories/list`, {
-    key: 'coingecko-categories',
-    server: false,
-    lazy: true,
-  })
+  const { data, status } = useFetch<CoinCategory[]>(
+    `${coingeckoApiBase}/coins/categories/list`,
+    {
+      key: 'coingecko-categories',
+      server: false,
+      lazy: true,
+    },
+  )
 
   const options = computed<SelectOption[]>(() =>
     (data.value ?? [])
-      .map(category => ({ label: category.name, value: category.category_id }))
+      // A few names arrive padded (" DN-404"), which would sort them ahead of
+      // every digit and letter and read as a stray indent in the list.
+      .map((category) => ({
+        label: category.name.trim(),
+        value: category.category_id,
+      }))
+      .filter((option) => option.label.length > 0)
       .sort((a, b) => a.label.localeCompare(b.label)),
   )
 

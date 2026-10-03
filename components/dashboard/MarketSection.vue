@@ -14,11 +14,15 @@ const matching = computed(() => {
   if (!term) return coins.value
 
   return coins.value.filter(
-    coin => coin.name.toLowerCase().includes(term) || coin.symbol.toLowerCase().includes(term),
+    (coin) =>
+      coin.name.toLowerCase().includes(term) ||
+      coin.symbol.toLowerCase().includes(term),
   )
 })
 
-const totalPages = computed(() => Math.ceil(matching.value.length / ITEMS_PER_PAGE))
+const totalPages = computed(() =>
+  Math.ceil(matching.value.length / ITEMS_PER_PAGE),
+)
 
 const visibleCoins = computed(() => {
   const start = ITEMS_PER_PAGE * (page.value - 1)
@@ -26,7 +30,9 @@ const visibleCoins = computed(() => {
 })
 
 // A narrower result set can leave the reader on a page that no longer exists.
-watch([search, category], () => { page.value = 1 })
+watch([search, category], () => {
+  page.value = 1
+})
 watch(totalPages, (count) => {
   if (count > 0 && page.value > count) page.value = count
 })
@@ -34,17 +40,23 @@ watch(totalPages, (count) => {
 
 <template>
   <section class="space-y-5">
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div
+      class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+    >
       <UiSearchInput v-model="search" class="w-full sm:max-w-xs" />
       <UiSelect
         v-model="category"
         :options="categoryOptions"
         placeholder="Categories"
-        class="w-full sm:max-w-[230px]"
+        class="w-full sm:max-w-[320px]"
       />
     </div>
 
-    <DashboardMarketTable :coins="visibleCoins" :is-loading="isLoading" :has-failed="hasFailed" />
+    <DashboardMarketTable
+      :coins="visibleCoins"
+      :is-loading="isLoading"
+      :has-failed="hasFailed"
+    />
 
     <UiPagination v-model="page" :total-pages="totalPages" />
   </section>

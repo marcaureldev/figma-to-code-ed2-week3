@@ -9,18 +9,20 @@ const { toggle } = useSidebar()
  * oversight rather than intent, so the heading follows the current route.
  */
 const heading = computed(
-  () => navigationItems.find(item => item.to === route.path)?.label ?? 'Dashboard',
+  () =>
+    navigationItems.find((item) => item.to === route.path)?.label ??
+    'Dashboard',
 )
 </script>
 
 <template>
   <header
-    class="flex items-center justify-between gap-4 border-b border-tokena-light-gray bg-white px-4 py-3 sm:px-6 dark:border-tokena-gray/15 dark:bg-tokena-dark-blue-1"
+    class="flex items-center justify-between gap-4 border-b border-tokena-light-gray bg-white px-4 py-3 dark:border-tokena-gray/15 dark:bg-tokena-dark-blue-1 sm:px-6"
   >
     <div class="flex min-w-0 items-center gap-4">
       <button
         type="button"
-        class="shrink-0 text-tokena-dark-gray lg:hidden dark:text-tokena-light-gray"
+        class="shrink-0 text-tokena-dark-gray dark:text-tokena-light-gray lg:hidden"
         aria-label="Open menu"
         @click="toggle"
       >
@@ -28,15 +30,21 @@ const heading = computed(
       </button>
 
       <div class="min-w-0">
-        <p class="truncate text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray">
+        <p
+          class="truncate text-sm font-semibold text-tokena-dark dark:text-tokena-light-gray"
+        >
           {{ heading }}
         </p>
-        <p class="truncate text-xs font-medium text-tokena-dark-gray dark:text-tokena-gray">
+        <p
+          class="truncate text-xs font-medium text-tokena-dark-gray dark:text-tokena-gray"
+        >
           Welcome back, John Doe !
         </p>
       </div>
 
-      <UiButton icon="add-wallet" class="hidden md:inline-flex">Connect wallet</UiButton>
+      <UiButton icon="add-wallet" class="hidden md:inline-flex"
+        >Connect wallet</UiButton
+      >
     </div>
 
     <div class="flex shrink-0 items-center gap-3">

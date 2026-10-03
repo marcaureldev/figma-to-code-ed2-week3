@@ -3,12 +3,10 @@ import type { IconName } from '~/components/ui/icons'
 export interface NavigationItem {
   label: string
   icon: IconName
-  /** Undefined while the design has no screen behind the entry. */
   to?: string
   hasSublinks?: boolean
 }
 
-/** The sidebar menu, in the order and with the icons the design specifies. */
 export const navigationItems: NavigationItem[] = [
   { label: 'Dashboard', icon: 'home', to: '/' },
   { label: 'News', icon: 'news', to: '/news' },

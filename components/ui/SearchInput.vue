@@ -17,6 +17,6 @@ withDefaults(defineProps<{ placeholder?: string }>(), {
       :placeholder="placeholder"
       :aria-label="placeholder"
       class="w-full bg-transparent text-sm font-medium text-tokena-dark placeholder:text-tokena-dark-gray focus:outline-none dark:text-tokena-light-gray"
-    >
+    />
   </div>
 </template>

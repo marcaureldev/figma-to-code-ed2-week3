@@ -14,8 +14,7 @@ export const useFavorites = () => {
     try {
       const stored = window.localStorage.getItem(STORAGE_KEY)
       if (stored) favorites.value = JSON.parse(stored) as string[]
-    }
-    catch {
+    } catch {
       // Unavailable or corrupt: start from an empty list rather than break.
     }
   })
@@ -23,17 +22,17 @@ export const useFavorites = () => {
   const persist = (): void => {
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites.value))
-    }
-    catch {
+    } catch {
       // Storage can be full or blocked; the in-memory list still works.
     }
   }
 
-  const isFavorite = (coinId: string): boolean => favorites.value.includes(coinId)
+  const isFavorite = (coinId: string): boolean =>
+    favorites.value.includes(coinId)
 
   const toggle = (coinId: string): void => {
     favorites.value = isFavorite(coinId)
-      ? favorites.value.filter(id => id !== coinId)
+      ? favorites.value.filter((id) => id !== coinId)
       : [...favorites.value, coinId]
 
     persist()

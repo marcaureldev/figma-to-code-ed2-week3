@@ -4,8 +4,12 @@
 export const useCoinOverview = () => {
   const selectedCoinId = useState<string | null>('coin-overview:id', () => null)
 
-  const open = (coinId: string): void => { selectedCoinId.value = coinId }
-  const close = (): void => { selectedCoinId.value = null }
+  const open = (coinId: string): void => {
+    selectedCoinId.value = coinId
+  }
+  const close = (): void => {
+    selectedCoinId.value = null
+  }
 
   return {
     selectedCoinId,

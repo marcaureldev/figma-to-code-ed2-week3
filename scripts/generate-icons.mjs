@@ -29,11 +29,11 @@ const REDUNDANT_VARIANTS = new Set([
   'home-icon.svg',
 ])
 
-const toName = file => file.replace(/\.svg$/, '').replace(/-icons?$/, '')
+const toName = (file) => file.replace(/\.svg$/, '').replace(/-icons?$/, '')
 
 const definitions = readdirSync(ICONS_DIR)
-  .filter(file => file.endsWith('.svg'))
-  .filter(file => !NOT_AN_ICON.has(file) && !REDUNDANT_VARIANTS.has(file))
+  .filter((file) => file.endsWith('.svg'))
+  .filter((file) => !NOT_AN_ICON.has(file) && !REDUNDANT_VARIANTS.has(file))
   .sort()
   .map((file) => {
     const svg = readFileSync(join(ICONS_DIR, file), 'utf8')
@@ -61,14 +61,18 @@ const definitions = readdirSync(ICONS_DIR)
   })
 
 const entries = definitions
-  .map(({ name, viewBox, body }) =>
-    `  ${JSON.stringify(name)}: {\n`
-    + `    viewBox: ${JSON.stringify(viewBox)},\n`
-    + `    body: ${JSON.stringify(body)},\n`
-    + `  },`)
+  .map(
+    ({ name, viewBox, body }) =>
+      `  ${JSON.stringify(name)}: {\n` +
+      `    viewBox: ${JSON.stringify(viewBox)},\n` +
+      `    body: ${JSON.stringify(body)},\n` +
+      `  },`,
+  )
   .join('\n')
 
-writeFileSync(OUTPUT, `/**
+writeFileSync(
+  OUTPUT,
+  `/**
  * Icon artwork from the Tokena design system, inlined so every glyph inherits
  * its colour from the surrounding text.
  *
@@ -84,7 +88,8 @@ ${entries}
 } as const satisfies Record<string, IconDefinition>
 
 export type IconName = keyof typeof icons
-`)
+`,
+)
 
 console.log(`${definitions.length} icons written to ${OUTPUT}`)
-console.log(definitions.map(d => d.name).join(', '))
+console.log(definitions.map((d) => d.name).join(', '))

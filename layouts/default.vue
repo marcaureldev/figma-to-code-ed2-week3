@@ -9,7 +9,7 @@
     <div class="lg:pl-60">
       <LayoutTopNav />
       <main class="px-4 py-5 sm:px-6">
-        <slot />
+        <slot></slot>
       </main>
     </div>
 

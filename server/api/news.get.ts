@@ -99,7 +99,10 @@ const HTML_ENTITIES: Record<string, string> = {
  */
 const toPlainText = (value: string): string =>
   value
-    .replace(/&[a-z]+;|&#\d+;/gi, entity => HTML_ENTITIES[entity.toLowerCase()] ?? ' ')
+    .replace(
+      /&[a-z]+;|&#\d+;/gi,
+      (entity) => HTML_ENTITIES[entity.toLowerCase()] ?? ' ',
+    )
     .replace(/<[^>]*>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
@@ -116,10 +119,10 @@ const stripSyndicationFooter = (value: string): string =>
 
 /** Keep only genuine, on-topic articles that have enough to render a card. */
 const isPublishable = (article: UpstreamArticle): boolean =>
-  article.contentType === 'news'
-  && CRYPTO_NEWSROOMS.has(article.source)
-  && Boolean(article.title?.trim())
-  && Boolean(article.link?.trim())
+  article.contentType === 'news' &&
+  CRYPTO_NEWSROOMS.has(article.source) &&
+  Boolean(article.title?.trim()) &&
+  Boolean(article.link?.trim())
 
 const normalise = (article: UpstreamArticle): NewsArticle => {
   const excerpt = article.description
@@ -154,8 +157,9 @@ const fetchUpstreamPage = async (
 
 /** The provider answers 403 once it has throttled a caller, 429 while doing so. */
 const isRateLimited = (cause: unknown): boolean => {
-  const status = (cause as { statusCode?: number, status?: number })?.statusCode
-    ?? (cause as { status?: number })?.status
+  const status =
+    (cause as { statusCode?: number; status?: number })?.statusCode ??
+    (cause as { status?: number })?.status
 
   return status === 403 || status === 429
 }
@@ -170,63 +174,65 @@ const isRateLimited = (cause: unknown): boolean => {
  * Filtering can leave an upstream page nearly empty, so this walks forward
  * until it has enough articles to fill the grid, and reports where to resume.
  */
-export default defineCachedEventHandler(async (event): Promise<NewsResponse> => {
-  const config = useRuntimeConfig(event)
-  const baseUrl = config.newsApiBase
-  const timeoutMs = Number(config.newsRequestTimeoutMs) || 10_000
+export default defineCachedEventHandler(
+  async (event): Promise<NewsResponse> => {
+    const config = useRuntimeConfig(event)
+    const baseUrl = config.newsApiBase
+    const timeoutMs = Number(config.newsRequestTimeoutMs) || 10_000
 
-  const startPage = Math.max(1, Number(getQuery(event).page) || 1)
+    const startPage = Math.max(1, Number(getQuery(event).page) || 1)
 
-  const collected: NewsArticle[] = []
-  const seen = new Set<string>()
+    const collected: NewsArticle[] = []
+    const seen = new Set<string>()
 
-  let currentPage = startPage
-  let feedHasMore = false
-  let fetchedAt: string | undefined
+    let currentPage = startPage
+    let feedHasMore = false
+    let fetchedAt: string | undefined
 
-  for (let attempt = 0; attempt < MAX_UPSTREAM_FETCHES; attempt += 1) {
-    let payload: UpstreamNewsResponse
+    for (let attempt = 0; attempt < MAX_UPSTREAM_FETCHES; attempt += 1) {
+      let payload: UpstreamNewsResponse
 
-    try {
-      payload = await fetchUpstreamPage(baseUrl, timeoutMs, currentPage)
+      try {
+        payload = await fetchUpstreamPage(baseUrl, timeoutMs, currentPage)
+      } catch (cause) {
+        // A later page failing still leaves us with something worth showing.
+        if (collected.length > 0) break
+
+        throw createError({
+          statusCode: isRateLimited(cause) ? 429 : 502,
+          statusMessage: isRateLimited(cause)
+            ? 'The news provider is rate limiting us'
+            : 'Could not reach the news provider',
+          cause,
+        })
+      }
+
+      fetchedAt ??= payload.fetchedAt
+
+      for (const article of payload.articles ?? []) {
+        if (!isPublishable(article) || seen.has(article.link)) continue
+
+        seen.add(article.link)
+        collected.push(normalise(article))
+      }
+
+      feedHasMore = payload.pagination?.hasMore ?? false
+      currentPage += 1
+
+      if (collected.length >= MIN_ARTICLES || !feedHasMore) break
     }
-    catch (cause) {
-      // A later page failing still leaves us with something worth showing.
-      if (collected.length > 0) break
 
-      throw createError({
-        statusCode: isRateLimited(cause) ? 429 : 502,
-        statusMessage: isRateLimited(cause)
-          ? 'The news provider is rate limiting us'
-          : 'Could not reach the news provider',
-        cause,
-      })
+    return {
+      articles: collected,
+      nextPage: feedHasMore ? currentPage : null,
+      fetchedAt: fetchedAt ?? new Date().toISOString(),
     }
-
-    fetchedAt ??= payload.fetchedAt
-
-    for (const article of payload.articles ?? []) {
-      if (!isPublishable(article) || seen.has(article.link)) continue
-
-      seen.add(article.link)
-      collected.push(normalise(article))
-    }
-
-    feedHasMore = payload.pagination?.hasMore ?? false
-    currentPage += 1
-
-    if (collected.length >= MIN_ARTICLES || !feedHasMore) break
-  }
-
-  return {
-    articles: collected,
-    nextPage: feedHasMore ? currentPage : null,
-    fetchedAt: fetchedAt ?? new Date().toISOString(),
-  }
-}, {
-  name: 'news',
-  swr: true,
-  maxAge: CACHE_SECONDS,
-  staleMaxAge: STALE_SECONDS,
-  getKey: event => `page-${Math.max(1, Number(getQuery(event).page) || 1)}`,
-})
+  },
+  {
+    name: 'news',
+    swr: true,
+    maxAge: CACHE_SECONDS,
+    staleMaxAge: STALE_SECONDS,
+    getKey: (event) => `page-${Math.max(1, Number(getQuery(event).page) || 1)}`,
+  },
+)

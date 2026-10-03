@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const ELLIPSIS = '…' as const
+const ELLIPSIS = '...' as const
 
 export type PageItem = number | typeof ELLIPSIS
 
@@ -48,7 +48,11 @@ const next = (): void => {
 </script>
 
 <template>
-  <nav v-if="items.length" class="flex items-center justify-center gap-2" aria-label="Pagination">
+  <nav
+    v-if="items.length"
+    class="flex items-center justify-center gap-2"
+    aria-label="Pagination"
+  >
     <button
       type="button"
       class="grid size-8 place-items-center rounded-[10px] text-tokena-dark-gray transition-colors hover:bg-tokena-light-gray disabled:opacity-40 disabled:hover:bg-transparent dark:text-tokena-gray dark:hover:bg-tokena-dark-blue-2"
@@ -60,14 +64,20 @@ const next = (): void => {
     </button>
 
     <template v-for="(item, index) in items" :key="`${item}-${index}`">
-      <span v-if="item === '…'" class="px-1 text-sm text-tokena-dark-gray dark:text-tokena-gray">…</span>
+      <span
+        v-if="item === ELLIPSIS"
+        class="px-1 text-sm text-tokena-dark-gray dark:text-tokena-gray"
+        >{{ ELLIPSIS }}</span
+      >
       <button
         v-else
         type="button"
         class="min-w-8 rounded-[10px] px-3 py-1.5 text-sm font-medium transition-colors"
-        :class="page === item
-          ? 'bg-tokena-blue text-white'
-          : 'text-tokena-blue hover:bg-tokena-blue/[0.07]'"
+        :class="
+          page === item
+            ? 'bg-tokena-blue text-white'
+            : 'text-tokena-blue hover:bg-tokena-blue/[0.07]'
+        "
         :aria-current="page === item ? 'page' : undefined"
         @click="goTo(item)"
       >
