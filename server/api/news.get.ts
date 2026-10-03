@@ -57,21 +57,31 @@ const MAX_EXCERPT = 180
 const MIN_ARTICLES = 8
 
 /**
- * Ceiling on upstream requests per call, so one page view cannot fan out.
- * Filtering yields roughly four articles per upstream page, so filling the
- * grid normally costs two.
+ * Ceiling on upstream requests per miss. Filtering keeps roughly a fifth of
+ * each upstream page, so filling the grid takes two to four of them. Caching
+ * is what keeps the provider happy, not a small fan-out: this budget is spent
+ * at most once per cache window, not once per visitor.
  */
-const MAX_UPSTREAM_FETCHES = 2
+const MAX_UPSTREAM_FETCHES = 4
 
 /**
- * How long a page of the feed is reused.
+ * How long a page of the feed is served before it is refreshed.
  *
- * The provider advertises generous limits but enforces them: hammering it
- * returns 403 REPEAT_RATE_LIMIT_ABUSE with a retry window of roughly an hour.
- * Since every server render would otherwise call upstream afresh, responses
- * are cached and shared across visitors.
+ * The provider advertises generous limits but enforces them hard: a burst
+ * earns 403 REPEAT_RATE_LIMIT_ABUSE and an hour-long lockout. Every server
+ * render would otherwise hit it afresh, so responses are cached and shared.
+ * Headlines do not move fast enough for a short window to be worth the risk.
  */
-const CACHE_SECONDS = 60 * 5
+const CACHE_SECONDS = 60 * 15
+
+/**
+ * How long a cached page may still be served after it goes stale.
+ *
+ * This is what stops a lockout from blanking the page: the refresh happens in
+ * the background, and if the provider refuses, readers keep the last good feed
+ * instead of an error.
+ */
+const STALE_SECONDS = 60 * 60
 
 const HTML_ENTITIES: Record<string, string> = {
   '&amp;': '&',
@@ -215,6 +225,8 @@ export default defineCachedEventHandler(async (event): Promise<NewsResponse> => 
   }
 }, {
   name: 'news',
+  swr: true,
   maxAge: CACHE_SECONDS,
+  staleMaxAge: STALE_SECONDS,
   getKey: event => `page-${Math.max(1, Number(getQuery(event).page) || 1)}`,
 })
