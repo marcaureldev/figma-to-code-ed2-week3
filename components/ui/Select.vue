@@ -183,17 +183,23 @@ onBeforeUnmount(() =>
     >
       <div
         v-if="isOpen"
-        class="absolute right-0 z-30 mt-1 flex w-full min-w-[234px] flex-col rounded-xl bg-white p-1.5 shadow-[0_0_4px_rgba(0,0,0,0.15)] dark:bg-tokena-dark-blue-1"
+        class="absolute right-0 z-30 mt-1 flex w-full min-w-[260px] flex-col rounded-xl bg-white p-1.5 shadow-[0_0_4px_rgba(0,0,0,0.15)] dark:bg-tokena-dark-blue-1"
       >
-        <input
-          v-if="searchable"
-          ref="searchField"
-          v-model="search"
-          type="search"
-          placeholder="Filter…"
-          :aria-label="`Filter ${placeholder.toLowerCase()}`"
-          class="mb-1 h-9 w-full rounded-[10px] bg-tokena-light-gray px-4 text-sm font-medium text-tokena-dark placeholder:text-tokena-dark-gray focus:outline-none dark:bg-tokena-dark-blue-2 dark:text-tokena-light-gray"
-        />
+        <div v-if="searchable" class="relative mb-1">
+          <UiIcon
+            name="search"
+            :size="16"
+            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-tokena-dark-gray"
+          />
+          <input
+            ref="searchField"
+            v-model="search"
+            type="search"
+            placeholder="Filter..."
+            :aria-label="`Filter ${placeholder.toLowerCase()}`"
+            class="h-9 w-full rounded-[10px] bg-tokena-light-gray pl-9 pr-3 text-sm font-medium text-tokena-dark placeholder:text-tokena-dark-gray focus:outline-none dark:bg-tokena-dark-blue-2 dark:text-tokena-light-gray"
+          />
+        </div>
 
         <ul
           :id="listId"

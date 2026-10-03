@@ -48,7 +48,7 @@ watch(totalPages, (count) => {
         v-model="category"
         :options="categoryOptions"
         placeholder="Categories"
-        class="w-full sm:max-w-[230px]"
+        class="w-full sm:max-w-[320px]"
       />
     </div>
 
