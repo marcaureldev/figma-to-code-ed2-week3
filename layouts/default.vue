@@ -12,5 +12,7 @@
         <slot />
       </main>
     </div>
+
+    <CoinOverviewPanel />
   </div>
 </template>

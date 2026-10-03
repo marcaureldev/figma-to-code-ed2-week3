@@ -105,7 +105,7 @@ const toPlainText = (value: string): string =>
     .trim()
 
 const truncate = (value: string, max: number): string =>
-  value.length <= max ? value : `${value.slice(0, max).trimEnd()}…`
+  value.length <= max ? value : `${value.slice(0, max).trimEnd()}...`
 
 /**
  * Many feeds append a syndication footer — "The post <title> appeared first

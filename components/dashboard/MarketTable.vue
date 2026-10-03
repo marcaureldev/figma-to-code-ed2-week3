@@ -8,6 +8,7 @@ defineProps<{
 }>()
 
 const { isFavorite, toggle } = useFavorites()
+const { open } = useCoinOverview()
 
 const sparklineOptions = (priceChange: number) => ({
   chart: {
@@ -58,7 +59,8 @@ const sparklineSeries = (prices: number[]) => [{ name: 'Price', data: prices }]
           <tr
             v-for="coin in coins"
             :key="coin.id"
-            class="whitespace-nowrap border-b border-tokena-light-gray transition-colors last:border-0 hover:bg-tokena-light-gray/60 dark:border-tokena-gray/10 dark:hover:bg-tokena-dark-blue-2/50"
+            class="cursor-pointer whitespace-nowrap border-b border-tokena-light-gray transition-colors last:border-0 hover:bg-tokena-light-gray/60 dark:border-tokena-gray/10 dark:hover:bg-tokena-dark-blue-2/50"
+            @click="open(coin.id)"
           >
             <td class="px-4 py-3">
               <button
@@ -67,19 +69,23 @@ const sparklineSeries = (prices: number[]) => [{ name: 'Price', data: prices }]
                 :class="isFavorite(coin.id) ? 'text-tokena-blue' : 'text-tokena-dark hover:text-tokena-blue dark:text-tokena-light-gray'"
                 :aria-label="isFavorite(coin.id) ? `Remove ${coin.name} from favourites` : `Add ${coin.name} to favourites`"
                 :aria-pressed="isFavorite(coin.id)"
-                @click="toggle(coin.id)"
+                @click.stop="toggle(coin.id)"
               >
                 <UiIcon name="star" :size="20" />
               </button>
             </td>
             <td class="px-4 py-3 text-tokena-dark dark:text-tokena-light-gray">{{ coin.market_cap_rank }}</td>
             <td class="px-4 py-3">
-              <div class="flex items-center gap-2">
+              <button
+                type="button"
+                class="flex items-center gap-2 text-left transition-colors hover:text-tokena-blue"
+                @click.stop="open(coin.id)"
+              >
                 <img :src="coin.image" :alt="coin.name" width="24" height="24" class="size-6 shrink-0 rounded-full">
                 <span class="font-medium text-tokena-dark dark:text-tokena-light-gray">
                   {{ coin.name }}-<span class="uppercase">{{ coin.symbol }}</span>
                 </span>
-              </div>
+              </button>
             </td>
             <td class="px-4 py-3 text-tokena-dark dark:text-tokena-light-gray">{{ formatPrice(coin.current_price) }}</td>
             <td class="px-4 py-3">

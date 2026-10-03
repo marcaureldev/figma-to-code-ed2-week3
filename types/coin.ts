@@ -81,3 +81,32 @@ export interface TrendingResponse {
   nfts: unknown[]
   categories: unknown[]
 }
+
+/** Subset of `GET /coins/{id}` the overview panel needs. */
+export interface CoinDetail {
+  id: string
+  symbol: string
+  name: string
+  market_cap_rank: number | null
+  image: {
+    thumb: string
+    small: string
+    large: string
+  }
+  description: {
+    /** HTML, and frequently empty for smaller coins. */
+    en: string
+  }
+  market_data: {
+    current_price: Record<string, number>
+    market_cap: Record<string, number>
+    high_24h: Record<string, number>
+    low_24h: Record<string, number>
+    circulating_supply: number
+  }
+}
+
+/** Response of `GET /coins/{id}/market_chart`: `[timestamp, price]` pairs. */
+export interface MarketChart {
+  prices: [number, number][]
+}
